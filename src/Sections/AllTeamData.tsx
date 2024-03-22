@@ -1,30 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { DataItem, StatGroup } from '../Interfaces/DataInterfaces';
+import { DataItem } from '../Interfaces/DataInterfaces';
 import TeamSeasonStats from '../Interfaces/TeamSeasonStats';
-import { start } from 'repl';
+
+interface SeasonMetaData {
+    EndDate: string;
+    Name: string;
+    StartDate: string;
+    StartDateTimeStamp: number;
+}
 
 interface AllTeamDataProps {
     Data: DataItem[];
-    StatGroups: StatGroup[];
     TeamId: string;
 }
 
-const AllTeamData = ({Data, StatGroups, TeamId}: AllTeamDataProps) => {
+const AllTeamData = ({Data, TeamId}: AllTeamDataProps) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
-    const [updated, setIsUpdated] = useState<number>(Date.now());
     const [isDataHandled, setIsDataHandled] = useState<boolean>(false);
     const [seasons, setSeasons] = useState<TeamSeasonStats[]>([]);
     const [totals, setTotals] = useState<TeamSeasonStats>();
     const [totalStartDate, setTotalStartDate] = useState<string>("");
     const [totalEndDate, setTotalEndDate] = useState<string>("");
 
+    const GetSeasonMetaData = (FileName: string, StatGroupId: string) => {
+        const games = Data
+            .filter(season => season.FileName === FileName)[0].Games
+            .filter(game => game.StatGroupID === StatGroupId);
+        const startDateArray = games[0].GameDate.split('.');
+
+        const metaData: SeasonMetaData = {
+            EndDate: games[games.length-1].GameDate,
+            Name: Data
+                .filter(season => season.FileName === FileName)[0].StatGroups
+                .filter(statgroup => statgroup.StatGroupID === StatGroupId)[0].StatGroupName,
+            StartDate: games[0].GameDate,
+            StartDateTimeStamp: Number(startDateArray[2] + startDateArray[1] + startDateArray[0])
+        };
+
+        return metaData;
+    };
+
     const HandleData = () => {
-        const tempSeasons: TeamSeasonStats[] = [];
+        let tempSeasons: TeamSeasonStats[] = [];
         const totalSeasons: TeamSeasonStats = {
+            EndDate: "",
             Games: 0,
             GoalsAgainst: 0,
             GoalsFor: 0,
             Looses: 0,
+            StartDate: "",
+            StartDateTimeStamp: 0,
             Ties: 0,
             Wins: 0
         };
@@ -39,15 +64,18 @@ const AllTeamData = ({Data, StatGroups, TeamId}: AllTeamDataProps) => {
                 standing.Teams.forEach(function (team) {
                     if (team.TeamID === TeamId) {
                         if (Number(team.Games) > 0) {
+                            const seasonMetaData = GetSeasonMetaData(dataItem.FileName, team.StatGroupID);
+
                             const tempSeason: TeamSeasonStats = {
-                                EndDate: "endDate",
+                                EndDate: seasonMetaData.EndDate,
                                 Games: Number(team.Games),
                                 GoalsAgainst: Number(team.GoalsAgainst),
                                 GoalsFor: Number(team.GoalsFor),
                                 Looses: Number(team.Looses),
-                                StartDate: "startDate",
+                                StartDate: seasonMetaData.StartDate,
+                                StartDateTimeStamp: seasonMetaData.StartDateTimeStamp,
                                 StatGroupId: team.StatGroupID,
-                                StatGroupName: dataItem.FileName + " - " + team.StatGroupID,
+                                StatGroupName: seasonMetaData.Name,
                                 Ties: Number(team.Ties),
                                 Wins: Number(team.Wins)
                             };
@@ -65,6 +93,8 @@ const AllTeamData = ({Data, StatGroups, TeamId}: AllTeamDataProps) => {
                 });
             });
         });
+
+        tempSeasons = tempSeasons.sort((a, b) => a.StartDateTimeStamp - b.StartDateTimeStamp);
 
         setSeasons(tempSeasons);
         setTotals(totalSeasons);
@@ -115,9 +145,9 @@ const AllTeamData = ({Data, StatGroups, TeamId}: AllTeamDataProps) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {seasons.map((season) => (
-                                <tr key={season.StatGroupName}>
-                                    <th>{season.StatGroupName}<br />{season.StartDate} - {season.EndDate}</th>
+                            {seasons.map((season, index) => (
+                                <tr key={index + "-" + season.StatGroupName}>
+                                    <th>{season.StartDate} - {season.EndDate}<br/>{season.StatGroupName}</th>
                                     <td>{season.Games}</td>
                                     <td>{season.Wins}</td>
                                     <td>{season.Ties}</td>

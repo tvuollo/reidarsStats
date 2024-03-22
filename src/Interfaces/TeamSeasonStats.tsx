@@ -1,11 +1,11 @@
 export interface TeamSeasonStats {
-    EndDate?: string;
+    EndDate: string;
     Games: number;
     GoalsAgainst: number;
     GoalsFor: number;
     Looses: number;
     PenaltyMinutes?: number;
-    StartDate?: string;
+    StartDate: string;
     StatGroupId?: string;
     StatGroupName?: string;
     Ties: number;

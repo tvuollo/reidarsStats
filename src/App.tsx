@@ -72,7 +72,7 @@ const App = () => {
     <div>
       {isLoading && <p>Loading...</p>}
       {!isLoading && (
-        <AllTeamData Data={masterData} StatGroups={statGroups} TeamId={reidarsTeamId} />
+        <AllTeamData Data={masterData} TeamId={reidarsTeamId} />
       )}
     </div>
   );
