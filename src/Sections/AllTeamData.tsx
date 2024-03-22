@@ -1,84 +1,89 @@
 import React, { useEffect, useState } from 'react';
-import { SeasonData, Team } from '../Interfaces/DataInterfaces';
+import { DataItem, StatGroup } from '../Interfaces/DataInterfaces';
+import TeamSeasonStats from '../Interfaces/TeamSeasonStats';
+import { start } from 'repl';
 
 interface AllTeamDataProps {
-    Data: SeasonData[];
+    Data: DataItem[];
+    StatGroups: StatGroup[];
+    TeamId: string;
 }
 
-interface TeamDataItem {
-    Games: number;
-    GoalsAgainst: number;
-    GoalsFor: number;
-    Looses: number;
-    PenaltyMinutes: number;
-    Ties: number;
-    Wins: number;
-    Year: string;
-}
-
-const AllTeamData = ({ Data }: AllTeamDataProps) => {
+const AllTeamData = ({Data, StatGroups, TeamId}: AllTeamDataProps) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
-    const [timePeriodString, setTimePeriodString] = useState<string>("");
-    const [seasons, setSeasons] = useState<TeamDataItem[]>([]);
-    const [reidars, setReidars] = useState<TeamDataItem>();
+    const [updated, setIsUpdated] = useState<number>(Date.now());
+    const [isDataHandled, setIsDataHandled] = useState<boolean>(false);
+    const [seasons, setSeasons] = useState<TeamSeasonStats[]>([]);
+    const [totals, setTotals] = useState<TeamSeasonStats>();
+    const [totalStartDate, setTotalStartDate] = useState<string>("");
+    const [totalEndDate, setTotalEndDate] = useState<string>("");
+
+    const HandleData = () => {
+        const tempSeasons: TeamSeasonStats[] = [];
+        const totalSeasons: TeamSeasonStats = {
+            Games: 0,
+            GoalsAgainst: 0,
+            GoalsFor: 0,
+            Looses: 0,
+            Ties: 0,
+            Wins: 0
+        };
+        setTotalStartDate(Data[0].Games[0].GameDate);
+        
+        Data.forEach(function (dataItem, index) {
+            if (index === (Data.length-1)) {
+                setTotalEndDate(dataItem.Games[dataItem.Games.length-1].GameDate);
+            }
+
+            dataItem.Standings.forEach(function (standing) {
+                standing.Teams.forEach(function (team) {
+                    if (team.TeamID === TeamId) {
+                        if (Number(team.Games) > 0) {
+                            const tempSeason: TeamSeasonStats = {
+                                EndDate: "endDate",
+                                Games: Number(team.Games),
+                                GoalsAgainst: Number(team.GoalsAgainst),
+                                GoalsFor: Number(team.GoalsFor),
+                                Looses: Number(team.Looses),
+                                StartDate: "startDate",
+                                StatGroupId: team.StatGroupID,
+                                StatGroupName: dataItem.FileName + " - " + team.StatGroupID,
+                                Ties: Number(team.Ties),
+                                Wins: Number(team.Wins)
+                            };
+
+                            tempSeasons.push(tempSeason);
+
+                            totalSeasons.Games = totalSeasons.Games + Number(team.Games);
+                            totalSeasons.GoalsAgainst = totalSeasons.GoalsAgainst + Number(team.GoalsAgainst);
+                            totalSeasons.GoalsFor = totalSeasons.GoalsFor + Number(team.GoalsFor);
+                            totalSeasons.Looses = totalSeasons.Looses + Number(team.Looses);
+                            totalSeasons.Ties = totalSeasons.Ties + Number(team.Ties);
+                            totalSeasons.Wins = totalSeasons.Wins + Number(team.Wins);                            
+                        }
+                    }
+                });
+            });
+        });
+
+        setSeasons(tempSeasons);
+        setTotals(totalSeasons);
+        setIsDataHandled(true);
+    };
 
     useEffect(() => {
         setIsInitialized(true);
     }, []);
 
     useEffect(() => {
-        if (isInitialized) {
-            // Get time period
-            const firstGameDate = Data[0].Games[0].GameDate;
-            const lastGameList = Data[Data.length - 1].Games;
-            const lastGameDate = lastGameList[lastGameList.length - 1].GameDate;
-            setTimePeriodString(`${firstGameDate} - ${lastGameDate}`);
-
-            // Iterate data from standings
-            let tempReidars: TeamDataItem = {
-                Games: 0,
-                Wins: 0,
-                Ties: 0,
-                Looses: 0,
-                GoalsFor: 0,
-                GoalsAgainst: 0,
-                PenaltyMinutes: 0,
-                Year: "Yhteensä"
-            };
-            Data.forEach((season) => {
-                season.Standings.forEach((standing) => {
-                    standing.Teams.forEach((item) => {
-                        if (item.TeamAbbreviation === "Reidars" && item.Games !== "0") {
-                            tempReidars.Games = tempReidars.Games + Number(item.Games);
-                            tempReidars.GoalsAgainst = tempReidars.GoalsAgainst + Number(item.GoalsAgainst);
-                            tempReidars.GoalsFor = tempReidars.GoalsFor + Number(item.GoalsFor);
-                            tempReidars.Looses = tempReidars.Looses + Number(item.Looses);
-                            tempReidars.PenaltyMinutes = tempReidars.PenaltyMinutes + Number(item.PenaltyMinutes);
-                            tempReidars.Ties = tempReidars.Ties + Number(item.Ties);
-                            tempReidars.Wins = tempReidars.Wins + Number(item.Wins);
-
-                            const newSeason: TeamDataItem = {
-                                Games: Number(item.Games),
-                                Wins: Number(item.Wins),
-                                Ties: Number(item.Ties),
-                                Looses: Number(item.Looses),
-                                GoalsFor: Number(item.GoalsFor),
-                                GoalsAgainst: Number(item.GoalsAgainst),
-                                PenaltyMinutes: Number(item.PenaltyMinutes),
-                                Year: season.SeasonString
-                            };
-
-                            const tempSeasons = seasons;
-                            tempSeasons.push(newSeason);
-
-                            setSeasons(tempSeasons);
-                        }
-                    });
-                });
-            });
-            setReidars(tempReidars);
+        if (isInitialized && !isDataHandled) {
+            HandleData();            
         }
     }, [isInitialized]);
+
+    if (!isDataHandled) {
+        return <p>Loading...</p>
+    } 
 
     return (
         <div>
@@ -87,49 +92,60 @@ const AllTeamData = ({ Data }: AllTeamDataProps) => {
                     <h1 className="articletitle">
                         Reidars Hockey Team
                     </h1>
-                    <p><small>Data aikaväliltä: {timePeriodString}</small></p>
+                    <p>
+                        <small>Data aikaväliltä: {totalStartDate} - {totalEndDate}</small>
+                    </p>
                 </div>
             </div>
             <div className="article__content">
                 <div className="articlebody">
-                    <table style={{ width: 800 }}>
+                    <table className="reidars-datatable">
                         <thead>
-                            <th>Vuosi</th>
-                            <th>Pelit</th>
-                            <th>Voitot</th>
-                            <th>Tasapelit</th>
-                            <th>Tappiot</th>
-                            <th>Tehdyt maalit</th>
-                            <th>Päästetyt maalit</th>
-                            <th>Rangaistusminuutit</th>
+                            <tr>
+                                <th>Kausi</th>
+                                <th>GP</th>
+                                <th>W</th>
+                                <th>T</th>
+                                <th>L</th>
+                                <th>GF</th>
+                                <th>GA</th>
+                                <th>W %</th>
+                                <th>GF AVG</th>
+                                <th>GA AVG</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            {seasons.map((item, index) => (
-                                <tr key={encodeURI(item.Year + "-" + index)}>
-                                    <td>{item.Year}</td>
-                                    <td>{item.Games}</td>
-                                    <td>{item.Wins}</td>
-                                    <td>{item.Ties}</td>
-                                    <td>{item.Looses}</td>
-                                    <td>{item.GoalsFor}</td>
-                                    <td>{item.GoalsAgainst}</td>
-                                    <td>{item.PenaltyMinutes}</td>
+                            {seasons.map((season) => (
+                                <tr key={season.StatGroupName}>
+                                    <th>{season.StatGroupName}<br />{season.StartDate} - {season.EndDate}</th>
+                                    <td>{season.Games}</td>
+                                    <td>{season.Wins}</td>
+                                    <td>{season.Ties}</td>
+                                    <td>{season.Looses}</td>
+                                    <td>{season.GoalsFor}</td>
+                                    <td>{season.GoalsAgainst}</td>
+                                    <td>{((season.Wins + season.Ties/2) / season.Games * 100).toFixed(2)}%</td>
+                                    <td>{(season.GoalsFor / season.Games).toFixed(2)}</td>
+                                    <td>{(season.GoalsAgainst / season.Games).toFixed(2)}</td>
                                 </tr>
                             ))}
-                            <tr></tr>
-                            {reidars !== undefined && (
-                                <tr>
-                                    <td>{reidars.Year}</td>
-                                    <td>{reidars.Games}</td>
-                                    <td>{reidars.Wins}</td>
-                                    <td>{reidars.Ties}</td>
-                                    <td>{reidars.Looses}</td>
-                                    <td>{reidars.GoalsFor}</td>
-                                    <td>{reidars.GoalsAgainst}</td>
-                                    <td>{reidars.PenaltyMinutes}</td>
-                                </tr>
-                            )}
                         </tbody>
+                        {totals !== undefined && (
+                        <tfoot>
+                                <tr>
+                                    <th>Yhteensä</th>
+                                    <td>{totals.Games}</td>
+                                    <td>{totals.Wins}</td>
+                                    <td>{totals.Ties}</td>
+                                    <td>{totals.Looses}</td>
+                                    <td>{totals.GoalsFor}</td>
+                                    <td>{totals.GoalsAgainst}</td>
+                                    <td>{((totals.Wins + totals.Ties/2) / totals.Games * 100).toFixed(2)}%</td>
+                                    <td>{(totals.GoalsFor / totals.Games).toFixed(2)}</td>
+                                    <td>{(totals.GoalsAgainst / totals.Games).toFixed(2)}</td>
+                                </tr>  
+                        </tfoot>
+                            )}
                     </table>
                 </div>
             </div>

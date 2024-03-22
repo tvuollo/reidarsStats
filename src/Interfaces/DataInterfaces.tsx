@@ -96,6 +96,6 @@ export interface Player {
     PlayerAge: number;
 }
 
-export interface SeasonData extends RootObject {
-    SeasonString: string;
+export interface DataItem extends RootObject {
+    FileName: string;
 }

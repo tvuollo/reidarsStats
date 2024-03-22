@@ -1,46 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { SeasonData } from './Interfaces/DataInterfaces';
+import { DataItem, RootObject, StatGroup } from './Interfaces/DataInterfaces';
 
 import AllTeamData from './Sections/AllTeamData.tsx';
-
-import './App.css';
 
 const App = () => {
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [updated, SetIsUpdated] = useState<number>(Date.now());
-  const [data, setData] = useState<SeasonData[]>([]);
+  const [updated, setUpdated] = useState<number>(Date.now());
 
+  const reidarsTeamId: string = "996011578";
   const dataPaths: string[] = ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'];
 
-  function getSeasonString(DataPath: string) {
-    return DataPath;
-    return `${Number(DataPath)-1}-${DataPath}`;
-  };
+  const [masterData, setMasterData] = useState<DataItem[]>([])
+  const [statGroups, setStatGroups] = useState<StatGroup[]>([]);
 
-  const getSeason = async (SeasonPath: string) => {
-    let seasonData: SeasonData = JSON.parse("[]");
+  const getMasterData = async () => {
+    const tempData: DataItem[] = [];
 
-    try {
-      await axios.get(`data/season${SeasonPath}.json`)
-        .then(res => seasonData = res.data)
-        .catch(err => console.log(err));
-    } catch (error) {
-      console.log("Axios error");
-      if (!axios.isCancel(error)) {
-        // TODO error handling & error message
+    dataPaths.forEach(function (year) {
+      let yearData: DataItem = JSON.parse("[]");
+
+      try {
+        axios.get(`data/season${year}.json`)
+          .then(res => yearData = res.data)
+          .then(function () {
+            yearData.FileName = year;
+            tempData.push(yearData);
+            setUpdated(Date.now());
+          })
+          .catch(err => console.log(err));
       }
-    };
+      catch (error) {
+        console.log("Axios error");
+        if (!axios.isCancel(error)) {
+          // TODO error handling & error message
+        }
+      };
+    });
 
-    if (seasonData !== JSON.parse("[]")) {
-      let tempData = data;
-      seasonData.SeasonString = getSeasonString(SeasonPath);
-      tempData.push(seasonData);
-      SetIsUpdated(Date.now());
-      setData(tempData);
-    }
+    setMasterData(tempData);
   };
 
   useEffect(() => {
@@ -49,14 +49,21 @@ const App = () => {
 
   useEffect(() => {
     if (isInitialized) {
-      dataPaths.forEach(function (season) {
-        getSeason(season);
-      });
+      getMasterData();
     }
   }, [isInitialized]);
 
   useEffect(() => {
-    if (data.length === dataPaths.length) {
+    if (masterData.length === dataPaths.length) {
+      const tempStatGroups: StatGroup[] = [];
+
+      masterData.forEach(function (year) {
+        year.StatGroups.forEach(function (group) {
+          tempStatGroups.push(group);
+        });
+      });
+
+      setStatGroups(tempStatGroups);
       setIsLoading(false);
     }
   }, [updated]);
@@ -65,7 +72,7 @@ const App = () => {
     <div>
       {isLoading && <p>Loading...</p>}
       {!isLoading && (
-        <AllTeamData Data={data} />
+        <AllTeamData Data={masterData} StatGroups={statGroups} TeamId={reidarsTeamId} />
       )}
     </div>
   );
