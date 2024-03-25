@@ -6,6 +6,7 @@ export interface TeamSeasonStats {
     Looses: number;
     PenaltyMinutes?: number;
     StartDate: string;
+    StartDateTimeStamp: number;
     StatGroupId?: string;
     StatGroupName?: string;
     Ties: number;

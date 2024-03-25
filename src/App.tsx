@@ -11,7 +11,19 @@ const App = () => {
   const [updated, setUpdated] = useState<number>(Date.now());
 
   const reidarsTeamId: string = "996011578";
-  const dataPaths: string[] = ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'];
+  const dataPaths: string[] = [
+    '2014',
+    '2015',
+    '2016',
+    '2017',
+    '2018',
+    '2019',
+    '2020',
+    '2021',
+    '2022',
+    '2023',
+    '2024'
+  ];
 
   const [masterData, setMasterData] = useState<DataItem[]>([])
   const [statGroups, setStatGroups] = useState<StatGroup[]>([]);

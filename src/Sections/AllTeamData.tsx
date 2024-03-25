@@ -177,7 +177,17 @@ const AllTeamData = ({Data, TeamId}: AllTeamDataProps) => {
                         </tfoot>
                             )}
                     </table>
-                    <p className="reidars-table-legend">GP: Pelejä pelattu,	W: Voitot, T: Tasapelit, L: Tappiot, GF: Tehdyt maalit, GA: Päästetyt maalit, W %: Voittoprosentti, GF AVG: Tehdyt maalit per peli, GA AVG: Päästetyt maalit per peli</p>
+                    <p className="reidars-table-legend">
+                        <span className="reidars-table-legend-span">GP: Pelejä pelattu</span>
+                        <span className="reidars-table-legend-span">W: Voitot</span>
+                        <span className="reidars-table-legend-span">T: Tasapelit</span>
+                        <span className="reidars-table-legend-span">L: Tappiot</span>
+                        <span className="reidars-table-legend-span">GF: Tehdyt maalit</span>
+                        <span className="reidars-table-legend-span">GA: Päästetyt maalit</span>
+                        <span className="reidars-table-legend-span">W %: Voittoprosentti</span>
+                        <span className="reidars-table-legend-span">GF AVG: Tehdyt maalit per peli</span>
+                        <span className="reidars-table-legend-span">GA AVG: Päästetyt maalit per peli</span>
+                    </p>
                 </div>
             </div>
         </div>

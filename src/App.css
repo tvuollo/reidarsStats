@@ -47,3 +47,14 @@
 .reidars-datatable tfoot td {
     border-top: 1px solid #D4D6D9;
 }
+
+.reidars-table-legend {
+    font-size: .85rem !important;
+    line-height: 1.25em !important;
+    margin: 2em 0 !important;
+}
+
+.reidars-table-legend-span {
+    display: inline-block;
+    margin: 0 .5rem .5rem 0;
+}
