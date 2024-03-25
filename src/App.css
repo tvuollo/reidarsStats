@@ -1,7 +1,13 @@
+.reidars-table-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
 .reidars-datatable {
     background: #fff;
     border: 1px solid #D4D6D9;
     border-radius: .5rem .5rem 0 0;
+    white-space: nowrap;
 }
 
 .reidars-datatable thead {
@@ -38,6 +44,10 @@
     text-align: left;
 }
 
+.reidard-datatable tbody a {
+    color: #004d9a;
+}
+
 .reidars-datatable tbody td,
 .reidars-datatable tfoot td {
     text-align: right;
@@ -46,6 +56,18 @@
 .reidars-datatable tfoot th,
 .reidars-datatable tfoot td {
     border-top: 1px solid #D4D6D9;
+}
+
+.reidars-datatable-td-left {
+    text-align: left !important;
+}
+
+.reidars-datatable-td-center {
+    text-align: center !important;
+}
+
+.reidars-datatable-td-right {
+    text-align: right !important;
 }
 
 .reidars-table-legend {
