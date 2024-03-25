@@ -37,7 +37,8 @@ const App = () => {
       let yearData: DataItem = JSON.parse("[]");
 
       try {
-        axios.get(`data/season${year}.json`)
+        //axios.get(`data/season${year}.json`)
+        axios.get(`https://reidarshockey.com/data/season${year}.json`)
           .then(res => yearData = res.data)
           .then(function () {
             yearData.FileName = year;
