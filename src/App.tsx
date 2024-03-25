@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-import { DataItem, RootObject, StatGroup } from './Interfaces/DataInterfaces';
-
+import { DataItem, StatGroup } from './Interfaces/DataInterfaces';
 import AllTeamData from './Sections/AllTeamData.tsx';
 
 const App = () => {
@@ -27,6 +25,8 @@ const App = () => {
 
   const [masterData, setMasterData] = useState<DataItem[]>([])
   const [statGroups, setStatGroups] = useState<StatGroup[]>([]);
+  const [totalStartDate, setTotalStartDate] = useState<string>("");
+  const [totalEndDate, setTotalEndDate] = useState<string>("");
 
   const getMasterData = async () => {
     const tempData: DataItem[] = [];
@@ -76,16 +76,35 @@ const App = () => {
       });
 
       setStatGroups(tempStatGroups);
+      setTotalStartDate(masterData[0].Games[0].GameDate);
+
+      const lastSeasonGames = masterData[masterData.length-1].Games;
+      setTotalEndDate(lastSeasonGames[lastSeasonGames.length - 1].GameDate);
+
       setIsLoading(false);
     }
   }, [updated]);
 
   return (
     <div>
-      {isLoading && <p>Loading...</p>}
-      {!isLoading && (
-        <AllTeamData Data={masterData} TeamId={reidarsTeamId} />
-      )}
+      <div className="article__header">
+        <div className="articleheader">
+          <h1 className="articletitle">
+            Reidars Hockey Team
+          </h1>
+          <p>
+            <small>Data aikaväliltä: {totalStartDate} - {totalEndDate}</small>
+          </p>
+        </div>
+      </div>
+      <div className="article__content">
+        <div className="articlebody">
+          {isLoading && <p>Loading...</p>}
+          {!isLoading && masterData.length > 0 && (
+            <AllTeamData Data={masterData} TeamId={reidarsTeamId} />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
