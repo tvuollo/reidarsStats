@@ -1,7 +1,7 @@
 .reidars-datatable {
     background: #fff;
     border: 1px solid #D4D6D9;
-    border-radius: 8px 8px 0 0;
+    border-radius: .5rem .5rem 0 0;
 }
 
 .reidars-datatable thead {
@@ -11,16 +11,16 @@
 }
 
 .reidars-datatable thead th:first-child {
-    border-radius: 8px 0 0 0;
+    border-radius: .5rem 0 0 0;
 }
 
 .reidars-datatable thead th:last-child {
-    border-radius: 0 8px 0 0;
+    border-radius: 0 .5rem 0 0;
 }
 
 .reidars-datatable thead th,
 .reidars-datatable tfoot th {
-    padding: 8px 16px;
+    padding: .5rem 1rem;
     text-align: left;
 }
 
@@ -31,7 +31,7 @@
 .reidars-datatable tbody td,
 .reidars-datatable tbody th,
 .reidars-datatable tfoot td {
-    padding: 8px 16px;
+    padding: .5rem 1rem;
 }
 
 .reidars-datatable tbody th {
