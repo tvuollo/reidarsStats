@@ -57,6 +57,11 @@ const App = () => {
     setMasterData(tempData);
   };
 
+  const HandleBackButtonClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault()
+    window.history.back();
+  };
+
   useEffect(() => {
     setIsInitialized(true);
   }, []);
@@ -96,6 +101,14 @@ const App = () => {
     <div>
       {!isLoading && masterData.length > 0 && (
         <>
+          {activeView !== "home" && (
+            <a
+              href="#"
+              onClick={(e) => HandleBackButtonClick(e)}
+              className="link reidars-backbutton">
+              &lsaquo; Takaisin
+            </a>
+          )}
           {activeView === "home" && (
             <AllTeamData
               Data={masterData}
@@ -108,6 +121,14 @@ const App = () => {
               Filename={parsedQuery.year}
               StatGroupId={parsedQuery.seasonid}
               TeamId={reidarsTeamId} />
+          )}
+          {activeView !== "home" && (
+            <a
+              href="#"
+              onClick={(e) => HandleBackButtonClick(e)}
+              className="link reidars-backbutton">
+              &lsaquo; Takaisin
+            </a>
           )}
         </>
       )}

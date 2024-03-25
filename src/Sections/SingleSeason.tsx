@@ -43,6 +43,10 @@ const SingleSeason = ({ Data, Filename, StatGroupId, TeamId }: SingleSeasonProps
 
         const startDateArray = seasonTempData.Games[0].GameDate.split('.');
 
+        if (seasonTempData.Standings[0].Teams[0].Ranking === "0") {
+            seasonTempData.Standings[0].Teams = seasonTempData.Standings[0].Teams.sort((b, a) => Number(a.Points) - Number(b.Points));
+        }
+
         setSeasonData(seasonTempData);
         setSeasonName(seasonTempData.StatGroups[0].StatGroupName + " " + startDateArray[2]);
         setSeasonStartDate(seasonTempData.Games[0].GameDate);
@@ -90,7 +94,7 @@ const SingleSeason = ({ Data, Filename, StatGroupId, TeamId }: SingleSeasonProps
                                 <tr>
                                     <th>Päivämäärä</th>
                                     <th></th>
-                                    <th>Tulos</th>
+                                    <th className="reidars-datatable-td-center">Tulos</th>
                                     <th></th>
                                     {seasonFileYear > 2015 &&
                                         <th>Linkit</th>
@@ -114,6 +118,49 @@ const SingleSeason = ({ Data, Filename, StatGroupId, TeamId }: SingleSeasonProps
                             </tbody>
                         </table>
                     </div>
+
+                    <h3 className="archiveitem__title">Sarjataulukko</h3>
+                    <div className="reidars-table-wrapper">
+                        <table className="reidars-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Sijoitus</th>
+                                    <th className="reidars-datatable-td-left">Joukkue</th>
+                                    <th>Pisteet</th>
+                                    <th>W</th>
+                                    <th>T</th>
+                                    <th>L</th>
+                                    <th>GF</th>
+                                    <th>GA</th>
+                                    <th>GDIFF</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {seasonData?.Standings[0].Teams.map((team, index) => (
+                                    <tr key={team.TeamID}>
+                                        <th>{team.Ranking !== "0" ? team.Ranking : index+1}</th>
+                                        <td className="reidars-datatable-td-left">{team.TeamAbbreviation}</td>
+                                        <td><strong>{team.Points}</strong></td>
+                                        <td>{team.Wins}</td>
+                                        <td>{team.Ties}</td>
+                                        <td>{team.Looses}</td>
+                                        <td>{team.GoalsFor}</td>
+                                        <td>{team.GoalsAgainst}</td>
+                                        <td>{team.GoalDiff}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p className="reidars-table-legend">
+                        <span className="reidars-table-legend-span">GP: Pelejä pelattu</span>
+                        <span className="reidars-table-legend-span">W: Voitot</span>
+                        <span className="reidars-table-legend-span">T: Tasapelit</span>
+                        <span className="reidars-table-legend-span">L: Tappiot</span>
+                        <span className="reidars-table-legend-span">GF: Tehdyt maalit</span>
+                        <span className="reidars-table-legend-span">GA: Päästetyt maalit</span>
+                        <span className="reidars-table-legend-span">GDIFF: Maaliero</span>
+                    </p>
                 </div>
             </div>
         </>
