@@ -161,6 +161,24 @@ const SingleSeason = ({ Data, Filename, StatGroupId, TeamId }: SingleSeasonProps
                         <span className="reidars-table-legend-span">GA: Päästetyt maalit</span>
                         <span className="reidars-table-legend-span">GDIFF: Maaliero</span>
                     </p>
+
+                    <h3 className="archiveitem__title">Linkit</h3>
+                    <a
+                        className="reidars-external-link-button"
+                        href={"https://tulospalvelu.leijonat.fi/serie/?season="
+                            + Filename
+                            + "&lid="
+                            + seasonData?.StatGroups[0].LevelID
+                            + "&did="
+                            + seasonData?.StatGroups[0].AreaID
+                            + "&stgid="
+                            + seasonData?.StatGroups[0].StatGroupID
+                            + "&lang=fi"
+                        }
+                        target="_blank"
+                    >
+                        Sarja tulospalvelussa <strong>&raquo;</strong>
+                    </a>
                 </div>
             </div>
         </>
