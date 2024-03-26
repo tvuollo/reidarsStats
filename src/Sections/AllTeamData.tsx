@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DataItem } from '../Interfaces/DataInterfaces';
+import { DataItem } from '../Interfaces/TeamSeasonInterfaces';
 import TeamSeasonStats from '../Interfaces/TeamSeasonStats';
 
 interface SeasonMetaData {

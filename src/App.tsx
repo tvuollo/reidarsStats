@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import queryString from 'query-string';
-import { DataItem, StatGroup } from './Interfaces/DataInterfaces';
+import { DataItem, StatGroup } from './Interfaces/TeamSeasonInterfaces.tsx';
 import AllTeamData from './Sections/AllTeamData.tsx';
 import SingleSeason from './Sections/SingleSeason.tsx';
+import DataView from './Sections/DataView.tsx';
 
 const App = () => {
   const parsedQuery = queryString.parse(window.location.search.replace("?", ""));
@@ -89,6 +90,9 @@ const App = () => {
 
   useEffect(() => {
     switch (parsedQuery.view) {
+      case "data":
+        setActiveView("data");
+        break;
       case "season":
         setActiveView("season");
         break;
@@ -110,6 +114,7 @@ const App = () => {
               &lsaquo; Takaisin
             </a>
           )}
+          
           {activeView === "home" && (
             <AllTeamData
               Data={masterData}
@@ -121,8 +126,17 @@ const App = () => {
               Data={masterData}
               Filename={parsedQuery.year}
               StatGroupId={parsedQuery.seasonid}
-              TeamId={reidarsTeamId} />
+            />
           )}
+          {/*
+          {activeView === "data" && (
+            <DataView
+              Data={masterData}
+              TeamId={reidarsTeamId}
+            />
+          )}          
+          */}
+
           {activeView !== "home" && (
             <a
               href="#"

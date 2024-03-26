@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { DataItem } from '../Interfaces/DataInterfaces';
-import { RootObject } from '../Interfaces/DataInterfaces';
+import { DataItem } from '../Interfaces/TeamSeasonInterfaces';
+import { RootObject } from '../Interfaces/TeamSeasonInterfaces';
 
 interface SingleSeasonProps {
     Data: DataItem[];
     Filename: string | (string | null)[] | null;
     StatGroupId: string | (string | null)[] | null;
-    TeamId: string;
 }
 
-const SingleSeason = ({ Data, Filename, StatGroupId, TeamId }: SingleSeasonProps) => {
+const SingleSeason = ({ Data, Filename, StatGroupId }: SingleSeasonProps) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
     const [isDataHandled, setIsDataHandled] = useState<boolean>(false);
     const [seasonData, setSeasonData] = useState<RootObject | null>(null);
