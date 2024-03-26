@@ -117,19 +117,13 @@ const AllTeamData = ({ Data, TeamId }: AllTeamDataProps) => {
         }
     }, [isInitialized]);
 
-    if (!isDataHandled) {
-        return <p>Loading...</p>
-    }
-
     return (
         <>
             <div className="article__header">
                 <div className="articleheader">
-                    <h1 className="articletitle">
-                        Reidars Hockey Team
-                    </h1>
+                    <h1 className="articletitle">Reidars Tilastokeskus</h1>
                     <p>
-                        <small>Data aikaväliltä: {totalStartDate} - {totalEndDate}</small>
+                        <small>Tilastodata aikaväliltä: {totalStartDate} - {totalEndDate}</small>
                     </p>
                 </div>
             </div>

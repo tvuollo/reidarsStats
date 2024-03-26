@@ -1,3 +1,9 @@
+.reidars-stats-container {
+    margin-bottom: clamp(1.5rem, calc(1.5rem + 48*((100vw - 600px) / 840)), 4.5rem);
+    margin-top: clamp(1.5rem, calc(1.5rem + 48*((100vw - 600px) / 840)), 4.5rem);
+    max-width: 90rem;
+}
+
 .reidars-table-wrapper {
     overflow-x: auto;
     max-width: 100%;

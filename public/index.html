@@ -1,43 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<html lang="fi">
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="reidars-stats-app"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+<head>
+  <meta charset="utf-8" />
+  <meta name="title" content="Reidars Hockey Team | Tilastot">
+  <meta name="description"
+    content="Official Home Page &#8211; Reidars harrastejääkiekkojoukkueen viralliset kotisivut.">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  <link rel="shortcut icon" href="https://reidarshockey.com/wp-content/themes/reidarstheme24/img/wwwfavicon.ico">
+  <link rel="stylesheet" href="https://reidarshockey.com/wp-content/themes/reidarstheme24/reidars.css">
+</head>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+<body>
+  <header class="header container">
+    <div class="headertop">
+      <p class="headertop__left">Reidars Hockey Team | EST 2011</p>
+      <p class="headertop__right">
+        <a class="headertop__link" href="http://reidarshockey.com/offsidereidars">Offside Reidars</a>
+        <a class="headertop__link" href="http://reidarshockey.com/materiaalisalkku">Materiaalisalkku</a>
+        <a class="headertop__link" href="http://reidarshockey.com/linkit">Linkit</a>
+      </p>
+    </div>
+    <nav class="navigation">
+      <div class="navigation__cutout navigation__cutout--left"></div>
+      <a href="http://reidarshockey.com" class="navigation__logo">
+        <img class="logo" src="https://reidarshockey.com/wp-content/themes/reidarstheme24/assets/img/logo480.png"
+          alt="Reidars Hockey Team" />
+      </a>
+      <div class="navigation__toggler">
+        <button type="button" class="menutoggler">
+          <span class="menutoggler__stripe menutoggler__stripe--1"></span>
+          <span class="menutoggler__stripe menutoggler__stripe--2"></span>
+          <span class="menutoggler__stripe menutoggler__stripe--3"></span>
+          <span class="menutoggler__text">Valikko</span>
+        </button>
+      </div>
+      <ul class="navigation__list">
+        <li class="navigation__listitem">
+          <a href="http://reidarshockey.com/arkisto/uutiset" class="navigation__link">Uutiset</a>
+        </li>
+        <li class="navigation__listitem">
+          <a href="http://reidarshockey.com/joukkue" class="navigation__link">Joukkue</a>
+        </li>
+        <li class="navigation__listitem">
+          <a href="http://reidarshockey.com/pelit" class="navigation__link">Pelit</a>
+        </li>
+        <li class="navigation__listitem">
+          <a href="http://reidarshockey.com/reidars-tv" class="navigation__link">Reidars TV</a>
+        </li>
+      </ul>
+      <div class="navigation__cutout navigation__cutout--right"></div>
+    </nav>
+  </header>
+
+  <div id="mobilemenu" class="mobilemenu">
+    <a href="http://reidarshockey.com" class="mobilemenu__logo">
+      <img class="logo" src="https://reidarshockey.com/wp-content/themes/reidarstheme24/assets/img/logo480.png"
+        alt="Reidars Hockey Team" />
+    </a>
+    <div class="mobilemenu__toggler">
+      <button type="button" class="menutoggler menutoggler--close">
+        <span class="menutoggler__stripe menutoggler__stripe--close menutoggler__stripe--1"></span>
+        <span class="menutoggler__stripe menutoggler__stripe--close menutoggler__stripe--2"></span>
+        <span class="menutoggler__stripe menutoggler__stripe--close menutoggler__stripe--3"></span>
+        <span class="menutoggler__text">Sulje valikko</span>
+      </button>
+    </div>
+    <div class="mobilemenu__inner">
+      <nav class="mobilenav">
+        <ul class="mobilenav__list">
+          <li class="mobilenav__listitem">
+            <a href="http://reidarshockey.com/arkisto/uutiset" class="mobilenav__link">Uutiset</a>
+          </li>
+          <li class="mobilenav__listitem">
+            <a href="http://reidarshockey.com/joukkue" class="mobilenav__link">Joukkue</a>
+          </li>
+          <li class="mobilenav__listitem">
+            <a href="http://reidarshockey.com/pelit" class="mobilenav__link">Pelit</a>
+          </li>
+          <li class="mobilenav__listitem">
+            <a href="http://reidarshockey.com/reidars-tv" class="mobilenav__link">Reidars TV</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="reidars-stats-app"></div>
+
+  <script type="text/javascript">
+    const mobileMenuTogglers = document.getElementsByClassName('menutoggler');
+    for (var i = 0; i < mobileMenuTogglers.length; i++) {
+      mobileMenuTogglers[i].addEventListener('click', function () {
+        const mobileMenu = document.getElementById('mobilemenu');
+        mobileMenu.classList.toggle("mobilemenu--open");
+      });
+    }
+  </script>
+</body>
+
 </html>

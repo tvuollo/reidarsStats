@@ -37,8 +37,7 @@ const App = () => {
       let yearData: DataItem = JSON.parse("[]");
 
       try {
-        //axios.get(`data/season${year}.json`)
-        axios.get(`https://reidarshockey.com/data/season${year}.json`)
+        axios.get(`data/season${year}.json`)
           .then(res => yearData = res.data)
           .then(function () {
             yearData.FileName = year;
@@ -99,7 +98,8 @@ const App = () => {
   }, [parsedQuery]);
 
   return (
-    <div>
+    <div className="container reidars-stats-container">
+      {isLoading && <p>Loading...</p>}
       {!isLoading && masterData.length > 0 && (
         <>
           {activeView !== "home" && (
