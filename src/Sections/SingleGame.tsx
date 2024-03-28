@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AwayTeam, HomeTeam, SingleGameEvents } from '../Interfaces/SingleGameEvents';
+import { AwayTeamGameRoster, HomeTeamGameRoster, SingleGameSummary } from '../Interfaces/SingleGameSummary';
 
 interface Opponent {
     Id: number;
@@ -16,9 +17,11 @@ interface SingleGameProps {
 
 const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
-    const [isDataHandled, setIsDataHandled] = useState<boolean>(false);
     const [eventsData, setEventsData] = useState<SingleGameEvents | null>(null);
+    const [summaryData, setSummaryData] = useState<AwayTeamGameRoster | HomeTeamGameRoster | null>(null);
     const [opponent, setOpponent] = useState<Opponent>();
+    const [isEventsDataHandled, setIsEventsDataHandled] = useState<boolean>(false);
+    const [isSummaryDataHandled, setIsSummaryDataHandled] = useState<boolean>(false);
     const [isNoData, setIsNoData] = useState<boolean>(false);
 
     const HandleOpponentData = (Team1: AwayTeam, Team2: HomeTeam) => {
@@ -39,16 +42,15 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
         setOpponent(opposingTeam);
     };
 
-    const HandleData = async () => {
+    const HandleEventsData = async () => {
         try {
             let tempEventsData: SingleGameEvents[] | null = null;
-            await axios.get(`data/SingleGameEvents.json`)
+            await axios.get(`data/singleGameEvents.json`)
                 .then(res => tempEventsData = res.data)
                 .then(function () {
-                    const matchedEvents = tempEventsData?.find(GamesUpdate => GamesUpdate.GamesUpdate[0].Id === Number(GameId));
+                    const matchedEvents = tempEventsData?.find(GameUpdates => GameUpdates.GamesUpdate[0].Id === Number(GameId));
                     if (matchedEvents !== undefined) {
                         setEventsData(matchedEvents);
-                        HandleOpponentData(matchedEvents.GamesUpdate[0].AwayTeam, matchedEvents.GamesUpdate[0].HomeTeam);
                     }
                 })
                 .catch(err => console.log(err));
@@ -60,7 +62,38 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
             }
         };
 
-        setIsDataHandled(true);
+        setIsEventsDataHandled(true);
+    };
+
+    const HandleSummaryData = async () => {
+        try {
+            let tempSummaryData: SingleGameSummary[];
+            await axios.get(`data/SingleGameSummaries.json`)
+                .then(res => tempSummaryData = res.data)
+                .then(function () {
+                    const matchedSummary = tempSummaryData?.find(
+                        summary => summary.AwayTeamGameRoster.Players.length > 0 &&
+                        summary.AwayTeamGameRoster.Players[0].GameID === GameId);
+                    
+                    if (matchedSummary !== undefined) {
+                        if (matchedSummary.AwayTeamGameRoster.Players[0].TeamID === TeamId) {
+                            setSummaryData(matchedSummary.AwayTeamGameRoster);
+                        }
+                        else {
+                            setSummaryData(matchedSummary.HomeTeamGameRoster);
+                        }
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        catch (error) {
+            console.log("Axios error");
+            if (!axios.isCancel(error)) {
+                // TODO error handling & error message
+            }
+        };
+
+        setIsSummaryDataHandled(true);
     };
 
     const GetTeamNameById = (Id: number) => {
@@ -91,14 +124,15 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
     }, []);
 
     useEffect(() => {
-        if (isInitialized && !isDataHandled) {
-            HandleData();
+        if (isInitialized) {
+            HandleEventsData();
+            HandleSummaryData();
         }
     }, [isInitialized]);
 
-    if (!isDataHandled) {
+    if (!isEventsDataHandled || !isSummaryDataHandled) {
         return <p>Loading...</p>
-    }
+    };
 
     return (
         <>
@@ -208,6 +242,34 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
                             </tbody>
                         </table>
                     </div>
+
+                    <h3 className="archiveitem__title">Tilastot</h3>
+                    <div className="reidars-table-wrapper">
+                        <table className="reidars-datatable">
+                            <thead>
+                                                <tr>
+                                                    <th className="reidars-datatable-td-left">#</th>
+                                                    <th className="reidars-datatable-td-left">Nimi</th>
+                                                    <th>G</th>
+                                                    <th>A</th>
+                                                    <th>PTS</th>
+                                                    <th>PIM</th>
+                                                </tr>
+                                </thead>
+                                <tbody>
+                                    {summaryData?.Players.map((player) => (
+                                        <tr key={player.UniqueID}>
+                                            <td className="reidars-datatable-td-left">{player.JerseyNr}</td>
+                                            <td className="reidars-datatable-td-left">{player.FirstName} {player.LastName}</td>
+                                            <td>{player.Goals}</td>
+                                            <td>{player.Assists}</td>
+                                            <td>{player.Points}</td>
+                                            <td>{player.PenMin}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                </table>
+                                </div>
 
                     <h3 className="archiveitem__title">Linkit</h3>
                     <a
