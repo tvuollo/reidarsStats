@@ -109,7 +109,13 @@ const SingleSeason = ({ Data, Filename, StatGroupId }: SingleSeasonProps) => {
                                         <td className="reidars-datatable-td-left">{game.HomeTeamAbbreviation}</td>
                                         {seasonFileYear > 2015 &&
                                             <td>
-                                                <a href={`https://tulospalvelu.leijonat.fi/game/?season=${Filename}&gameid=${game.GameID}&lang=fi&statgroupid=${game.StatGroupID}`} target="_blank">Linkki tulospalveluun &rsaquo;</a>
+                                                <strong>
+                                                    <a
+                                                        href={`?view=game&year=${Filename}&gameid=${game.GameID}`}
+                                                    >
+                                                        Pelin tilastot &rsaquo;
+                                                    </a>
+                                                </strong>
                                             </td>
                                         }
                                     </tr>
@@ -137,7 +143,7 @@ const SingleSeason = ({ Data, Filename, StatGroupId }: SingleSeasonProps) => {
                             <tbody>
                                 {seasonData?.Standings[0].Teams.map((team, index) => (
                                     <tr key={team.TeamID}>
-                                        <th>{team.Ranking !== "0" ? team.Ranking : index+1}</th>
+                                        <th>{team.Ranking !== "0" ? team.Ranking : index + 1}</th>
                                         <td className="reidars-datatable-td-left">{team.TeamAbbreviation}</td>
                                         <td><strong>{team.Points}</strong></td>
                                         <td>{team.Wins}</td>

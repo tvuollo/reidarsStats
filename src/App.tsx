@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import { DataItem, StatGroup } from './Interfaces/TeamSeasonInterfaces.tsx';
 import AllTeamData from './Sections/AllTeamData.tsx';
 import SingleSeason from './Sections/SingleSeason.tsx';
+import SingleGame from './Sections/SingleGame.tsx';
 import DataView from './Sections/DataView.tsx';
 
 const App = () => {
@@ -93,6 +94,9 @@ const App = () => {
       case "data":
         setActiveView("data");
         break;
+      case "game":
+          setActiveView("game");
+          break;
       case "season":
         setActiveView("season");
         break;
@@ -119,6 +123,13 @@ const App = () => {
             <AllTeamData
               Data={masterData}
               TeamId={reidarsTeamId}
+            />
+          )}
+          {activeView === "game" && (
+            <SingleGame
+              Data={masterData}
+              Filename={parsedQuery.year}
+              GameId={parsedQuery.gameid}
             />
           )}
           {activeView === "season" && (
