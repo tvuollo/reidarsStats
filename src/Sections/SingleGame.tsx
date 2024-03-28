@@ -1,19 +1,89 @@
 import React, { useEffect, useState } from 'react';
-import { DataItem } from '../Interfaces/TeamSeasonInterfaces';
-import { RootObject } from '../Interfaces/TeamSeasonInterfaces';
+import axios from 'axios';
+import { AwayTeam, HomeTeam, SingleGameEvents } from '../Interfaces/SingleGameEvents';
 
-interface SingleGameProps {
-    Data: DataItem[];
-    Filename: string | (string | null)[] | null;
-    GameId: string | (string | null)[] | null;
+interface Opponent {
+    Id: number;
+    Name: string;
 }
 
-const SingleGame = ({ Data, Filename, GameId }: SingleGameProps) => {
+interface SingleGameProps {
+    Filename: string | (string | null)[] | null;
+    GameId: string | (string | null)[] | null;
+    StatGroupId: string | (string | null)[] | null;
+    TeamId: string | (string | null)[] | null;
+}
+
+const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
     const [isDataHandled, setIsDataHandled] = useState<boolean>(false);
-    const [seasonData, setSeasonData] = useState<RootObject | null>(null);
+    const [eventsData, setEventsData] = useState<SingleGameEvents | null>(null);
+    const [opponent, setOpponent] = useState<Opponent>();
+    const [isNoData, setIsNoData] = useState<boolean>(false);
 
-    const HandleData = () => {
+    const HandleOpponentData = (Team1: AwayTeam, Team2: HomeTeam) => {
+        const opposingTeam: Opponent = {
+            Id: 0,
+            Name: ""
+        };
+
+        if (Team1.Id === Number(TeamId)) {
+            opposingTeam.Id = Team2.Id;
+            opposingTeam.Name = Team2.Name;
+        }
+        else {
+            opposingTeam.Id = Team1.Id;
+            opposingTeam.Name = Team1.Name;
+        }
+
+        setOpponent(opposingTeam);
+    };
+
+    const HandleData = async () => {
+        try {
+            let tempEventsData: SingleGameEvents[] | null = null;
+            await axios.get(`data/SingleGameEvents.json`)
+                .then(res => tempEventsData = res.data)
+                .then(function () {
+                    const matchedEvents = tempEventsData?.find(GamesUpdate => GamesUpdate.GamesUpdate[0].Id === Number(GameId));
+                    if (matchedEvents !== undefined) {
+                        setEventsData(matchedEvents);
+                        HandleOpponentData(matchedEvents.GamesUpdate[0].AwayTeam, matchedEvents.GamesUpdate[0].HomeTeam);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        catch (error) {
+            console.log("Axios error");
+            if (!axios.isCancel(error)) {
+                // TODO error handling & error message
+            }
+        };
+
+        setIsDataHandled(true);
+    };
+
+    const GetTeamNameById = (Id: number) => {
+        if (eventsData?.GamesUpdate[0].AwayTeam.Id == Id) {
+            return eventsData?.GamesUpdate[0].AwayTeam.Name;
+        }
+        else {
+            return eventsData?.GamesUpdate[0].HomeTeam.Name;
+        }
+    };
+
+    const GetEventType = (Type: string) => {
+        // GK_start, Goal, Penalty
+        switch (Type) {
+            case "GK_start":
+                return "Maalivahti aloittaa";
+            case "Goal":
+                return "Maali";
+            case "Penalty":
+                return "Rangaistus";
+            default:
+                return "";
+        }
     };
 
     useEffect(() => {
@@ -22,10 +92,6 @@ const SingleGame = ({ Data, Filename, GameId }: SingleGameProps) => {
 
     useEffect(() => {
         if (isInitialized && !isDataHandled) {
-            if (Filename != null) {
-
-            }
-
             HandleData();
         }
     }, [isInitialized]);
@@ -38,26 +104,107 @@ const SingleGame = ({ Data, Filename, GameId }: SingleGameProps) => {
         <>
             <div className="article__header">
                 <div className="articleheader">
-                    <h1 className="articletitle">Game view</h1>
+                    <h1 className="articletitle">Pelin tiedot</h1>
                     <p>
-                        <small>Game details</small>
+                        <small>
+                            {eventsData?.GamesUpdate[0].StatGroupName}
+                            {" | "}
+                            {eventsData?.GamesUpdate[0].StartDate}
+                        </small>
                     </p>
+                </div>
+            </div>
+            <div className="article__score">
+                <div className="gameitem gameitem--report">
+                    <p className="gameitem__header">
+                        {eventsData?.GamesUpdate[0].Arena}
+                        {" | "}
+                        {eventsData?.GamesUpdate[0].StartDate}
+                        {" | "}
+                        {eventsData?.GamesUpdate[0].StartTime}
+                    </p>
+                    <div className="gameitem__score">
+                        <div className="gamescore">
+                            <span className="gamescore__team gamescore__team--home"></span>
+                            <span className="gamescore__score">
+                                {eventsData?.GamesUpdate[0].AwayTeam.Name}
+                                {"  "}
+                                {eventsData?.GamesUpdate[0].AwayTeam.Goals}
+                                {"  -  "}
+                                {eventsData?.GamesUpdate[0].HomeTeam.Goals}
+                                {"  "}
+                                {eventsData?.GamesUpdate[0].HomeTeam.Name}
+                            </span>
+                            <span className="gamescore__team gamescore__team--away"></span>
+                        </div>
+                    </div>
+                    <p className="gameitem__scorers">Yleisöä: {eventsData?.GamesUpdate[0].Spectators}</p>
                 </div>
             </div>
             <div className="article__content">
                 <div className="articlebody">
-                    <h3 className="archiveitem__title">Otsikko</h3>
+                    <h3 className="archiveitem__title">Tapahtumat</h3>
                     <div className="reidars-table-wrapper">
                         <table className="reidars-datatable">
                             <thead>
                                 <tr>
-                                    <th>Päivämäärä</th>
+                                    <th />
+                                    <th />
+                                    <th />
+                                    <th>{eventsData?.GamesUpdate[0].AwayTeam.Name}</th>
+                                    <th>{eventsData?.GamesUpdate[0].HomeTeam.Name}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>data</td>
-                                </tr>
+                                {eventsData?.GameLogsUpdate.map((event, index) => (
+                                    <tr key={event.Key + "" + index}>
+                                        <td className="reidars-datatable-td-left">{(event.GameTime / 60).toFixed(2)}</td>
+                                        <td className="reidars-datatable-td-left">
+                                            {GetEventType(event.Type)}<br />
+                                            <small>{GetTeamNameById(event.TeamId)}</small>
+                                        </td>
+                                        <td className="reidars-datatable-td-left">
+                                            {event.Type === "Goal" && (
+                                                <>
+                                                    {event.ScorerName}<br />
+                                                    {event.FirstAssistName && (
+                                                        <>
+                                                            {"Syöttäjät: "}
+                                                            {event.FirstAssistName}
+                                                            {event.SecondAssistName !== undefined && event.SecondAssistName?.length > 2 && (
+                                                                <>
+                                                                    {", "}
+                                                                    {event.SecondAssistName}
+                                                                </>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </>
+                                            )}
+                                            {event.Type === "Penalty" && (
+                                                <>
+                                                    {event.SuffererNames}<br />
+                                                    {event.PenaltyMinutesNumber}{" minuuttia"}
+                                                    {" | "}
+                                                    {event.PenaltyReasonsFI}
+                                                </>
+                                            )}
+                                            {event.Type === "GK_start" && (
+                                                <>{event.GoalkeeperName}</>
+                                            )}
+                                        </td>
+                                        <td>
+                                            {event.Type === "Goal" &&
+                                                event.AwayTeamGoals
+                                            }
+                                        </td>
+                                        <td>
+                                            {event.Type === "Goal" &&
+                                                event.HomeTeamGoals
+                                            }
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>

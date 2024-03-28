@@ -127,9 +127,10 @@ const App = () => {
           )}
           {activeView === "game" && (
             <SingleGame
-              Data={masterData}
               Filename={parsedQuery.year}
               GameId={parsedQuery.gameid}
+              StatGroupId={parsedQuery.seasonid}
+              TeamId={reidarsTeamId}
             />
           )}
           {activeView === "season" && (

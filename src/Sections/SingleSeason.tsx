@@ -111,7 +111,7 @@ const SingleSeason = ({ Data, Filename, StatGroupId }: SingleSeasonProps) => {
                                             <td>
                                                 <strong>
                                                     <a
-                                                        href={`?view=game&year=${Filename}&gameid=${game.GameID}`}
+                                                        href={`?view=game&year=${Filename}&season=${game.StatGroupID}&gameid=${game.GameID}`}
                                                     >
                                                         Pelin tilastot &rsaquo;
                                                     </a>

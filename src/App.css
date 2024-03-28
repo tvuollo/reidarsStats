@@ -111,3 +111,7 @@
 .reidars-external-link-button:active {
     background-color: #f0f0f0;
 }
+
+.article__score {
+    max-width: 60rem;
+}
