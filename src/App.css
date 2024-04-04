@@ -115,3 +115,66 @@
 .article__score {
     max-width: 60rem;
 }
+
+.reidars-home-totals {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -1rem;
+}
+
+.reidars-home-total {
+    display: block;
+    flex: 0 0 calc(50% - 2rem);
+    font-weight: 700;
+    margin: 0 1rem 1rem;
+    text-transform: uppercase;
+}
+
+.reidars-home-total-number {
+    color: #002fa3;
+    display: block;
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: .85em;
+    text-transform: uppercase;
+}
+
+.reidars-home-links {
+padding-top: 2rem;
+}
+
+.reidars-home-link {
+    border: 1px solid #D4D6D9;
+    border-radius: .5rem;
+    display: block;
+    font-size: clamp(1rem, calc(1rem + 5*((100vw - 600px) / 840)), 1.3125rem);
+    font-weight: 700;
+    line-height: 1.3em;
+    padding: 1rem;
+    text-transform: uppercase;
+}
+
+.reidars-home-link-text {
+    color: #606060;
+    display: block;
+    font-size: 1rem;
+    text-transform: none;
+}
+
+@media (min-width: 768px) {
+    .reidars-home-total {
+        flex: 0 0 calc(25% - 2rem);
+    }
+
+    .reidars-home-links {
+        align-items: stretch;
+        display: flex;
+        margin: 0 -1rem;
+    }
+
+    .reidars-home-link {
+        flex: 0 0 calc(100% / 3 - 2rem);
+        margin: 0 1rem 2rem;
+    }
+}

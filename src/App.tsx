@@ -6,6 +6,7 @@ import AllTeamData from './Sections/AllTeamData.tsx';
 import SingleSeason from './Sections/SingleSeason.tsx';
 import SingleGame from './Sections/SingleGame.tsx';
 import DataView from './Sections/DataView.tsx';
+import Home from './Sections/Home.tsx';
 
 const App = () => {
   const parsedQuery = queryString.parse(window.location.search.replace("?", ""));
@@ -29,7 +30,6 @@ const App = () => {
   ];
 
   const [masterData, setMasterData] = useState<DataItem[]>([])
-  const [statGroups, setStatGroups] = useState<StatGroup[]>([]);
   const [activeView, setActiveView] = useState<string>("home");
 
   const getMasterData = async () => {
@@ -76,15 +76,6 @@ const App = () => {
 
   useEffect(() => {
     if (masterData.length === dataPaths.length) {
-      const tempStatGroups: StatGroup[] = [];
-
-      masterData.forEach(function (year) {
-        year.StatGroups.forEach(function (group) {
-          tempStatGroups.push(group);
-        });
-      });
-
-      setStatGroups(tempStatGroups);
       setIsLoading(false);
     }
   }, [updated]);
@@ -95,10 +86,16 @@ const App = () => {
         setActiveView("data");
         break;
       case "game":
-          setActiveView("game");
-          break;
+        setActiveView("game");
+        break;
       case "season":
         setActiveView("season");
+        break;
+      case "players":
+        setActiveView("players");
+        break;
+      case "team":
+        setActiveView("team");
         break;
       default:
         setActiveView("home");
@@ -118,8 +115,13 @@ const App = () => {
               &lsaquo; Takaisin
             </a>
           )}
-          
           {activeView === "home" && (
+            <Home
+              Data={masterData}
+              TeamId={reidarsTeamId}
+            />
+          )}
+          {activeView === "team" && (
             <AllTeamData
               Data={masterData}
               TeamId={reidarsTeamId}

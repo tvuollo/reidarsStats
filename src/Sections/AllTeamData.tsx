@@ -121,9 +121,9 @@ const AllTeamData = ({ Data, TeamId }: AllTeamDataProps) => {
         <>
             <div className="article__header">
                 <div className="articleheader">
-                    <h1 className="articletitle">Reidars Tilastokeskus</h1>
+                    <h1 className="articletitle">Reidars joukkuetilastot</h1>
                     <p>
-                        <small>Tilastodata aikaväliltä: {totalStartDate} - {totalEndDate}</small>
+                        <small>Tilastodata aikaväliltä: {totalStartDate} - {totalEndDate}{" | "}Sisältää vain harrastesarjan pelit</small>
                     </p>
                 </div>
             </div>
