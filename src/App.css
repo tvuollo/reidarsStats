@@ -151,7 +151,7 @@ padding-top: 2rem;
     font-size: clamp(1rem, calc(1rem + 5*((100vw - 600px) / 840)), 1.3125rem);
     font-weight: 700;
     line-height: 1.3em;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     text-transform: uppercase;
 }
 

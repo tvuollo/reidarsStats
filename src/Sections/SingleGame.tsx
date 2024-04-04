@@ -19,28 +19,8 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
     const [eventsData, setEventsData] = useState<SingleGameEvents | null>(null);
     const [summaryData, setSummaryData] = useState<AwayTeamGameRoster | HomeTeamGameRoster | null>(null);
-    const [opponent, setOpponent] = useState<Opponent>();
     const [isEventsDataHandled, setIsEventsDataHandled] = useState<boolean>(false);
     const [isSummaryDataHandled, setIsSummaryDataHandled] = useState<boolean>(false);
-    const [isNoData, setIsNoData] = useState<boolean>(false);
-
-    const HandleOpponentData = (Team1: AwayTeam, Team2: HomeTeam) => {
-        const opposingTeam: Opponent = {
-            Id: 0,
-            Name: ""
-        };
-
-        if (Team1.Id === Number(TeamId)) {
-            opposingTeam.Id = Team2.Id;
-            opposingTeam.Name = Team2.Name;
-        }
-        else {
-            opposingTeam.Id = Team1.Id;
-            opposingTeam.Name = Team1.Name;
-        }
-
-        setOpponent(opposingTeam);
-    };
 
     const HandleEventsData = async () => {
         try {
@@ -73,8 +53,8 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
                 .then(function () {
                     const matchedSummary = tempSummaryData?.find(
                         summary => summary.AwayTeamGameRoster.Players.length > 0 &&
-                        summary.AwayTeamGameRoster.Players[0].GameID === GameId);
-                    
+                            summary.AwayTeamGameRoster.Players[0].GameID === GameId);
+
                     if (matchedSummary !== undefined) {
                         if (matchedSummary.AwayTeamGameRoster.Players[0].TeamID === TeamId) {
                             setSummaryData(matchedSummary.AwayTeamGameRoster);
@@ -247,29 +227,29 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
                     <div className="reidars-table-wrapper">
                         <table className="reidars-datatable">
                             <thead>
-                                                <tr>
-                                                    <th className="reidars-datatable-td-left">#</th>
-                                                    <th className="reidars-datatable-td-left">Nimi</th>
-                                                    <th>G</th>
-                                                    <th>A</th>
-                                                    <th>PTS</th>
-                                                    <th>PIM</th>
-                                                </tr>
-                                </thead>
-                                <tbody>
-                                    {summaryData?.Players.map((player) => (
-                                        <tr key={player.UniqueID}>
-                                            <td className="reidars-datatable-td-left">{player.JerseyNr}</td>
-                                            <td className="reidars-datatable-td-left">{player.FirstName} {player.LastName}</td>
-                                            <td>{player.Goals}</td>
-                                            <td>{player.Assists}</td>
-                                            <td>{player.Points}</td>
-                                            <td>{player.PenMin}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                                </table>
-                                </div>
+                                <tr>
+                                    <th className="reidars-datatable-td-left">#</th>
+                                    <th className="reidars-datatable-td-left">Nimi</th>
+                                    <th>G</th>
+                                    <th>A</th>
+                                    <th>PTS</th>
+                                    <th>PIM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {summaryData?.Players.map((player) => (
+                                    <tr key={player.UniqueID}>
+                                        <td className="reidars-datatable-td-left">{player.JerseyNr}</td>
+                                        <td className="reidars-datatable-td-left">{player.FirstName} {player.LastName}</td>
+                                        <td>{player.Goals}</td>
+                                        <td>{player.Assists}</td>
+                                        <td>{player.Points}</td>
+                                        <td>{player.PenMin}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
                     <h3 className="archiveitem__title">Linkit</h3>
                     <a

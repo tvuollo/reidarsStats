@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import queryString from 'query-string';
 import { DataItem, StatGroup } from './Interfaces/TeamSeasonInterfaces.tsx';
+import AllPlayerData from './Sections/AllPlayerData.tsx';
 import AllTeamData from './Sections/AllTeamData.tsx';
 import SingleSeason from './Sections/SingleSeason.tsx';
 import SingleGame from './Sections/SingleGame.tsx';
@@ -117,6 +118,12 @@ const App = () => {
           )}
           {activeView === "home" && (
             <Home
+              Data={masterData}
+              TeamId={reidarsTeamId}
+            />
+          )}
+          {activeView === "players" && (
+            <AllPlayerData
               Data={masterData}
               TeamId={reidarsTeamId}
             />
