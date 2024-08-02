@@ -70,6 +70,7 @@ export interface Game {
     AwayTeamAbbreviation: string;
     ResultEnabled: number;
     ReportEnabled: number;
+    SerieID?: string;
 }
 
 export interface StatGroup {

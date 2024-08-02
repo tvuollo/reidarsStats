@@ -25,12 +25,15 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
     const HandleEventsData = async () => {
         try {
             let tempEventsData: SingleGameEvents[] | null = null;
-            await axios.get(`data/singleGameEvents.json`)
+            await axios.get(`data/events/events${Filename}.json`)
                 .then(res => tempEventsData = res.data)
                 .then(function () {
                     const matchedEvents = tempEventsData?.find(GameUpdates => GameUpdates.GamesUpdate[0].Id === Number(GameId));
                     if (matchedEvents !== undefined) {
                         setEventsData(matchedEvents);
+                    }
+                    else {
+                        console.log('undefined');
                     }
                 })
                 .catch(err => console.log(err));
@@ -48,7 +51,7 @@ const SingleGame = ({ Filename, GameId, StatGroupId, TeamId }: SingleGameProps) 
     const HandleSummaryData = async () => {
         try {
             let tempSummaryData: SingleGameSummary[];
-            await axios.get(`data/SingleGameSummaries.json`)
+            await axios.get(`data/summaries/summaries${Filename}.json`)
                 .then(res => tempSummaryData = res.data)
                 .then(function () {
                     const matchedSummary = tempSummaryData?.find(

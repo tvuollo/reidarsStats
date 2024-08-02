@@ -12,8 +12,10 @@ interface GameListItem {
 
 interface DataViewProps {
     Data: DataItem[];
-    TeamId: string;
 }
+
+// Season
+// https://www.leijonat.fi/modules/mod_teamcardseasonstats/helper/getteamseasondata3.php?teamid=996011578&seasonnumber=2024
 
 // Events
 // https://tulospalvelu.leijonat.fi/unsync/front1/statsapi/gamereports/2016/getgamereportdata.php?gameid=15561
@@ -24,7 +26,9 @@ interface DataViewProps {
 // Summary
 // https://tulospalvelu.leijonat.fi/game/helpers/getSummary.php?season=2016&gameid=15561
 
-const DataView = ({ Data, TeamId }: DataViewProps) => {
+const DataView = ({ Data }: DataViewProps) => {
+    const seasonString = 2016;
+
     const [counter, setCounter] = useState<number>(0);
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
@@ -39,20 +43,27 @@ const DataView = ({ Data, TeamId }: DataViewProps) => {
     const [isGameSummaryDataFetched, setIsGamesSummaryDataFetched] = useState<boolean>(false);
 
     const BuildGamesList = () => {
-        let tempGamesList: GameListItem[] = [];
+        if (seasonString.toString() !== null && seasonString.toString() !== "") {
+            let tempGamesList: GameListItem[] = [];
 
-        Data.forEach(function (item) {
-            item.Games.forEach(function (game) {
-                const tempGame: GameListItem = {
-                    GameId: game.GameID,
-                    Season: item.FileName
-                };
-                tempGamesList.push(tempGame);
+            Data.forEach(function (year) {
+                if (year.FileName === seasonString.toString()) {
+                    year.Games.forEach(function (game) {
+                        const tempGame: GameListItem = {
+                            GameId: game.GameID,
+                            Season: seasonString.toString()
+                        };
+                        tempGamesList.push(tempGame);
+                    });                    
+                }
             });
-        });
 
-        setGamesList(tempGamesList);
-        setIsGamesList(true);
+            setGamesList(tempGamesList);
+            setIsGamesList(true);
+        }
+        else {
+            console.log('no season');
+        }
     };
 
     const GetGamesEventsData = () => {
@@ -158,7 +169,7 @@ const DataView = ({ Data, TeamId }: DataViewProps) => {
 
     useEffect(() => {
         if (isGamesList && !isGameEventsDataFetched) {
-            //GetGamesEventsData();
+            //GetGamesEventsData(); 
         }
         if (isGamesList && !isGameRostersDataFetched) {
             //GetGamesRostersData();
@@ -170,7 +181,7 @@ const DataView = ({ Data, TeamId }: DataViewProps) => {
 
     return (
         <div>
-            {isGamesList && <p>games built</p>}
+            {isGamesList && <p>games built</p>}  
             <p>{counter}</p>
             {gamesList.length > 9999 && (
                 <ul>
@@ -178,7 +189,7 @@ const DataView = ({ Data, TeamId }: DataViewProps) => {
                         <li key={Number(game.Season) + Number(game.GameId)}>{index + 1}: {game.GameId}</li>
                     ))}
                 </ul>
-            )}
+            )} 
             {isGameEventsDataFetched && gameEventsData.length > 0 && (
                 <p>{JSON.stringify(gameEventsData)}</p>
             )}
@@ -188,7 +199,7 @@ const DataView = ({ Data, TeamId }: DataViewProps) => {
             {isGameSummaryDataFetched && gameSummaryData.length > 0 && (
                 <p>{JSON.stringify(gameSummaryData)}</p>
             )}
-        </div>
+        </div> 
     );
 }
 

@@ -1,67 +1,67 @@
 {
     "Players": [
         {
-            "PersonID": "566427872788453925322690&zwf=c18bc92e8c47b82ffe2e4d370d935009",
+            "PersonID": "728022122788453999351171&zwf=884066dacc0aee78009315030f0d7693",
             "DateOfBirth": "1987-07-24",
             "LastName": "SILTALA",
             "FirstName": "Jukka",
             "JerseyNr": "34",
             "RoleName": "Maalivahti",
             "RoleID": 1,
-            "PlayerAge": 36
+            "PlayerAge": 37
         },
         {
-            "PersonID": "157980434013846361445688&zwf=08c9b23582670df381b6d18b97abc81b",
+            "PersonID": "285254074013846394732495&zwf=9302d93a01c00260f36f359c4bdb4597",
             "DateOfBirth": "1984-01-02",
             "LastName": "LEINONEN",
             "FirstName": "Jussi",
             "JerseyNr": "36",
             "RoleName": "Maalivahti",
             "RoleID": 1,
-            "PlayerAge": 39
+            "PlayerAge": 40
         },
         {
-            "PersonID": "222140943126607559435859&zwf=1ca0f467e752323ad6c83146017baaf9",
+            "PersonID": "470555923126607574294201&zwf=ab1adae1376d764925384208a4d5a332",
             "DateOfBirth": "1996-04-24",
             "LastName": "SEPP\u00c4L\u00c4",
             "FirstName": "Aki",
             "JerseyNr": "4",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 27
+            "PlayerAge": 28
         },
         {
-            "PersonID": "379196184017247356333325&zwf=14efecc5d3523b1ed9d939bb3dc4ab6f",
+            "PersonID": "186882694017247389497942&zwf=d858d86944eb935cbc3f6ec308cefb06",
             "DateOfBirth": "1986-04-17",
             "LastName": "HANSKI",
             "FirstName": "Lauri",
             "JerseyNr": "6",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 37
+            "PlayerAge": 38
         },
         {
-            "PersonID": "123330254011019525380638&zwf=b016e3b36bb1254e887bd3a3366a69dc",
+            "PersonID": "900997984011019537152996&zwf=e6a4e7bf3f233ceb8a8a65578d8ddb18",
             "DateOfBirth": "1996-12-18",
             "LastName": "KOKKO",
             "FirstName": "Ilkka",
             "JerseyNr": "11",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 26
+            "PlayerAge": 27
         },
         {
-            "PersonID": "421153342170606645268815&zwf=26d74f02f5f74614ce1ac7bcea5bedc8",
+            "PersonID": "793954042170606610683215&zwf=ea6d6e05aa991dd16ee3166d947bdb9e",
             "DateOfBirth": "1993-03-02",
             "LastName": "HY\u00d6TYL\u00c4",
             "FirstName": "Ville",
             "JerseyNr": "13",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 30
+            "PlayerAge": 31
         },
         {
-            "PersonID": "662661072508888732949326&zwf=1b945efef02578df121dc5962191c2c0",
+            "PersonID": "333764272508888792131912&zwf=bc2369cec459434bf66ef70431a5ba52",
             "DateOfBirth": "1983-12-01",
             "LastName": "REIJONEN",
             "FirstName": "Mikko",
@@ -71,37 +71,37 @@
             "PlayerAge": 40
         },
         {
-            "PersonID": "627225174013936399557269&zwf=efc2673e2d74f62bcc04edf45325152e",
+            "PersonID": "397057734013936331783731&zwf=a4a62c826d698229c15d8539dda10632",
             "DateOfBirth": "1968-03-02",
             "LastName": "MIKKOLA",
             "FirstName": "Jari",
             "JerseyNr": "27",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 55
+            "PlayerAge": 56
         },
         {
-            "PersonID": "772206552459495821138200&zwf=c18a0d289f03d6916ad26204f92a5aff",
+            "PersonID": "552930352459495865367965&zwf=51c63dbe58f783f7a89db79b93e545a5",
             "DateOfBirth": "1997-04-14",
             "LastName": "KARPPINEN",
             "FirstName": "Aleksi",
             "JerseyNr": "28",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 26
+            "PlayerAge": 27
         },
         {
-            "PersonID": "255085886035027137867849&zwf=009fbdc13ce628ffd4d9b46882eba3cd",
+            "PersonID": "341184516035027148329824&zwf=68143fcc9b5df5df6b8856ba717adfab",
             "DateOfBirth": "1982-01-08",
             "LastName": "OLIVEIRA",
             "FirstName": "Ryan",
             "JerseyNr": "33",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 41
+            "PlayerAge": 42
         },
         {
-            "PersonID": "291852042418316558936946&zwf=fdce6c38879e7e2235d16f1b16aa61a6",
+            "PersonID": "289703472418316536033907&zwf=e48b4d6aef084b2e7537b0444203e41b",
             "DateOfBirth": "1996-08-27",
             "LastName": "KANTOLA",
             "FirstName": "Jason",
@@ -111,47 +111,47 @@
             "PlayerAge": 27
         },
         {
-            "PersonID": "677971312558598248408006&zwf=42f6bc446c28681505f666589bea9326",
+            "PersonID": "707506852558598235080640&zwf=25bb9afa5e9cf7ceefc319e15f07df21",
             "DateOfBirth": "1977-05-17",
             "LastName": "SOKERO",
             "FirstName": "Tomi",
             "JerseyNr": "51",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 46
+            "PlayerAge": 47
         },
         {
-            "PersonID": "186828376037073193823978&zwf=7fbf4e8bc55e1aa912bf5e9897c4cc05",
+            "PersonID": "475164466037073191310165&zwf=a50cd4806a76cdd29989fa136f1c38b0",
             "DateOfBirth": "1989-07-09",
             "LastName": "KERKEL\u00c4",
             "FirstName": "Iiro",
             "JerseyNr": "53",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 34
+            "PlayerAge": 35
         },
         {
-            "PersonID": "451099672440575939271382&zwf=fee55825f3a95f84dc4f725a44507d19",
+            "PersonID": "825085732440575954189681&zwf=d5889a51fc3d3066f10b83ce8e71050d",
             "DateOfBirth": "1992-12-19",
             "LastName": "HEIKKA",
             "FirstName": "Olli",
             "JerseyNr": "65",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 30
+            "PlayerAge": 31
         },
         {
-            "PersonID": "895151104018172235666869&zwf=d10f79033644fe214cbe04c6392ea5df",
+            "PersonID": "669943674018172254107222&zwf=3366f920c351d8f017ee3e8b66f67c39",
             "DateOfBirth": "1980-04-05",
             "LastName": "IIVARI",
             "FirstName": "Kalle",
             "JerseyNr": "71",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 43
+            "PlayerAge": 44
         },
         {
-            "PersonID": "961406626045738655787002&zwf=6e78969bc19408e8d372e4872749c8f0",
+            "PersonID": "373426226045738633366426&zwf=adb308cc58151a7f672b79cd60177ec8",
             "DateOfBirth": "1973-08-15",
             "LastName": "LAMPELA",
             "FirstName": "Kalle",
@@ -161,73 +161,57 @@
             "PlayerAge": 50
         },
         {
-            "PersonID": "134487524020623536414472&zwf=4f41f07d8aa9503a5de5cdd529590acc",
+            "PersonID": "197598654020623553567433&zwf=b53c1e6525a0a47cf66e0c5589761487",
             "DateOfBirth": "1988-06-07",
             "LastName": "MUURIM\u00c4KI",
             "FirstName": "Peter",
             "JerseyNr": "88",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 35
+            "PlayerAge": 36
         },
         {
-            "PersonID": "192419494031508673070113&zwf=ffc92236b120f87d6bac523c6a960333",
+            "PersonID": "856379824031508648818016&zwf=6a6442701383438125d996273d89b430",
             "DateOfBirth": "1992-01-15",
             "LastName": "R\u00c4IH\u00c4",
             "FirstName": "Henri",
             "JerseyNr": "90",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 31
+            "PlayerAge": 32
         },
         {
-            "PersonID": "892681274030724414789385&zwf=44bfadf90726e4c36a70bd86a08ee22d",
+            "PersonID": "778821164030724410102396&zwf=4f9ab593b823bf6774c3d3e146cfda3a",
             "DateOfBirth": "1992-12-29",
             "LastName": "JUOTASNIEMI",
             "FirstName": "Joonas",
             "JerseyNr": "91",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 30
+            "PlayerAge": 31
         },
         {
-            "PersonID": "957866734036756821830632&zwf=36fd945bdf23743f847639989e73596c",
+            "PersonID": "588580794036756859612483&zwf=6fbe86d34a27742ccc65913650753c28",
             "DateOfBirth": "1992-06-08",
             "LastName": "MANTERE",
             "FirstName": "Olli-Pekka",
             "JerseyNr": "92",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 31
+            "PlayerAge": 32
         },
         {
-            "PersonID": "767098484014195710976963&zwf=de581b5eae2fe758634c1f3c30bf4da9",
+            "PersonID": "140629044014195714724152&zwf=e0635169271f342200c41fa539fea2f7",
             "DateOfBirth": "1986-05-28",
             "LastName": "VUOLLO",
             "FirstName": "Tuomas",
             "JerseyNr": "93",
             "RoleName": "Kentt\u00e4pelaaja",
             "RoleID": 4,
-            "PlayerAge": 37
+            "PlayerAge": 38
         }
     ],
-    "ContactPersons": [
-        {
-            "LastName": "MIKKOLA",
-            "FirstName": "Jari",
-            "RoleName": "Joukkueenjohtaja"
-        },
-        {
-            "LastName": "IIVARI",
-            "FirstName": "Kalle",
-            "RoleName": "Toimihenkil\u00f6"
-        },
-        {
-            "LastName": "LAMPELA",
-            "FirstName": "Kalle",
-            "RoleName": "Toimihenkil\u00f6"
-        }
-    ],
+    "ContactPersons": [],
     "StatGroups": [
         {
             "StatGroupID": "9153",
@@ -816,7 +800,7 @@
             "AwayGoals": "0",
             "HomeAssists": "0",
             "AwayAssists": "0",
-            "PersonID": "627697562508888712458835&zwf=8f54597b8ead105578bd9fbf397de853",
+            "PersonID": "334621282508888759792323&zwf=85cad9f7c9f6f069908bc7b3293fdde8",
             "LastName": "REIJONEN",
             "FirstName": "Mikko",
             "Goals": 14,
@@ -824,13 +808,13 @@
             "Points": 24
         },
         {
-            "StatGroupID": "9153",
+            "StatGroupID": "9152",
             "PlayerID": "40307244",
             "HomeGoals": "0",
-            "AwayGoals": "0",
+            "AwayGoals": "2",
             "HomeAssists": "0",
-            "AwayAssists": "1",
-            "PersonID": "139581544020623572219506&zwf=dc7cacc56ac711917050616ebf87d67b",
+            "AwayAssists": "2",
+            "PersonID": "623167554020623566665158&zwf=8f5fa9ff1002b05caf22926e493837d4",
             "LastName": "MUURIM\u00c4KI",
             "FirstName": "Peter",
             "Goals": 10,
@@ -844,7 +828,7 @@
             "AwayGoals": "0",
             "HomeAssists": "0",
             "AwayAssists": "2",
-            "PersonID": "290559222418316510327838&zwf=00ce75bba9c6d435a43a936b55080eec",
+            "PersonID": "636172762418316539598998&zwf=ed10bdfc1704f497e71b207252608ea6",
             "LastName": "KANTOLA",
             "FirstName": "Jason",
             "Goals": 4,
@@ -858,7 +842,7 @@
             "AwayGoals": "0",
             "HomeAssists": "2",
             "AwayAssists": "3",
-            "PersonID": "527664254036756868817541&zwf=984f5fbc1b9174471a5d29363d7fd0ca",
+            "PersonID": "612678234036756832626694&zwf=127840055b341608cbd4dee78eec745d",
             "LastName": "MANTERE",
             "FirstName": "Olli-Pekka",
             "Goals": 6,
@@ -872,7 +856,7 @@
             "AwayGoals": "5",
             "HomeAssists": "3",
             "AwayAssists": "3",
-            "PersonID": "432886642459495862679752&zwf=09c442fd992e8a41168e61bc22775470",
+            "PersonID": "212637202459495825672203&zwf=65a3a7ba55c88023db6e3c2c0b0b5607",
             "LastName": "KARPPINEN",
             "FirstName": "Aleksi",
             "Goals": 6,
@@ -886,7 +870,7 @@
             "AwayGoals": "3",
             "HomeAssists": "3",
             "AwayAssists": "2",
-            "PersonID": "590286473126607533818058&zwf=20c96f50c9f26fc76de6c5b7cb58097d",
+            "PersonID": "120416733126607517933909&zwf=659de52e616b8b3a93affcedeea57ca9",
             "LastName": "SEPP\u00c4L\u00c4",
             "FirstName": "Aki",
             "Goals": 4,
@@ -900,7 +884,7 @@
             "AwayGoals": "0",
             "HomeAssists": "0",
             "AwayAssists": "1",
-            "PersonID": "865554484011019596925072&zwf=79f8bd6eba698b05e0081170550b2701",
+            "PersonID": "340864884011019538087974&zwf=9b4a20c7f95ab46e2f2f0e8be0915295",
             "LastName": "KOKKO",
             "FirstName": "Ilkka",
             "Goals": 3,
@@ -914,7 +898,7 @@
             "AwayGoals": "0",
             "HomeAssists": "0",
             "AwayAssists": "0",
-            "PersonID": "273365266035027159032539&zwf=9c5706eed13aa9b6f186197aec376d58",
+            "PersonID": "818945396035027131098494&zwf=2b1dfb45cc29d2ce128172394bb0c410",
             "LastName": "OLIVEIRA",
             "FirstName": "Ryan",
             "Goals": 1,
@@ -928,7 +912,7 @@
             "AwayGoals": "0",
             "HomeAssists": "1",
             "AwayAssists": "0",
-            "PersonID": "962903624014195766486040&zwf=21e6bd6a2bb24ccde03e47c00d69b905",
+            "PersonID": "716245024014195772207414&zwf=821b8818d470f15358c850feb8a5446f",
             "LastName": "VUOLLO",
             "FirstName": "Tuomas",
             "Goals": 5,
@@ -942,7 +926,7 @@
             "AwayGoals": "2",
             "HomeAssists": "0",
             "AwayAssists": "1",
-            "PersonID": "364429864013936399298975&zwf=b912230e439661723d70a8fa95051409",
+            "PersonID": "156198004013936334161858&zwf=89f09cd20a12ab9e15388a8a10ab15bd",
             "LastName": "MIKKOLA",
             "FirstName": "Jari",
             "Goals": 1,
@@ -950,7 +934,7 @@
             "Points": 6
         },
         {
-            "PersonID": "721709276045738637633725&zwf=fe7f96cf641531c3438bf23c51215874",
+            "PersonID": "578335766045738613659360&zwf=09b0e9186d3b3d4d502c65616ec53371",
             "LastName": "LAMPELA",
             "FirstName": "Kalle",
             "Goals": 2,
@@ -958,13 +942,13 @@
             "Points": 5
         },
         {
-            "StatGroupID": "9153",
+            "StatGroupID": "9152",
             "PlayerID": "40367568",
-            "HomeGoals": "1",
-            "AwayGoals": "1",
+            "HomeGoals": "2",
+            "AwayGoals": "2",
             "HomeAssists": "2",
-            "AwayAssists": "3",
-            "PersonID": "927074124030724479467440&zwf=6e7a3e9c1a22821b99f5cdae34b75dc3",
+            "AwayAssists": "0",
+            "PersonID": "911936314030724415699453&zwf=042cfe2f0a43a343c9163019393548e4",
             "LastName": "JUOTASNIEMI",
             "FirstName": "Joonas",
             "Goals": 2,
@@ -978,7 +962,7 @@
             "AwayGoals": "2",
             "HomeAssists": "2",
             "AwayAssists": "4",
-            "PersonID": "118274682170606673621119&zwf=9f89d2ea1b49fe81cd4aa6a8cd644e35",
+            "PersonID": "685026052170606627413604&zwf=522c4a0a15c5dec5d052f90d6be8a2c6",
             "LastName": "HY\u00d6TYL\u00c4",
             "FirstName": "Ville",
             "Goals": 3,
@@ -992,7 +976,7 @@
             "AwayGoals": "0",
             "HomeAssists": "0",
             "AwayAssists": "0",
-            "PersonID": "952920076037073149384862&zwf=13ca7bf008c617f534134332d2ca870d",
+            "PersonID": "820887426037073153752456&zwf=0afb507b2107ea94827acd72c4217a06",
             "LastName": "KERKEL\u00c4",
             "FirstName": "Iiro",
             "Goals": 1,
@@ -1006,7 +990,7 @@
             "AwayGoals": "1",
             "HomeAssists": "2",
             "AwayAssists": "1",
-            "PersonID": "996749542440575997196824&zwf=213fffcd812ccfc389d8e56a886c6cf1",
+            "PersonID": "611054292440575919722405&zwf=e25fe668125cc28fc986aa2f055cac74",
             "LastName": "HEIKKA",
             "FirstName": "Olli",
             "Goals": 0,
@@ -1020,7 +1004,7 @@
             "AwayGoals": "0",
             "HomeAssists": "1",
             "AwayAssists": "2",
-            "PersonID": "220872574013846393983650&zwf=f3b0b5caf7a8e4a78fc1f30d7a75088b",
+            "PersonID": "936175534013846318139994&zwf=db7ee4b7c948f8537ba8a4f4d49d7712",
             "LastName": "LEINONEN",
             "FirstName": "Jussi",
             "Goals": 1,
@@ -1034,7 +1018,7 @@
             "AwayGoals": "2",
             "HomeAssists": "2",
             "AwayAssists": "3",
-            "PersonID": "163862574017247336290732&zwf=ac43f65b25881504ace43ce6f50df974",
+            "PersonID": "718606394017247349459267&zwf=7297cd71fad6df6e0d5bd3a03413ac27",
             "LastName": "HANSKI",
             "FirstName": "Lauri",
             "Goals": 0,
@@ -1048,7 +1032,7 @@
             "AwayGoals": "1",
             "HomeAssists": "0",
             "AwayAssists": "3",
-            "PersonID": "856925952788453975530535&zwf=f3ca8b7e1a9b4a66ba5ec2467429abef",
+            "PersonID": "644084302788453967864310&zwf=5902cf4fadca78d451830b316196815a",
             "LastName": "SILTALA",
             "FirstName": "Jukka",
             "Goals": 0,
@@ -1062,7 +1046,7 @@
             "AwayGoals": "0",
             "HomeAssists": "0",
             "AwayAssists": "0",
-            "PersonID": "309322462558598228776552&zwf=fba526421c7e5364d61e0b8d900235b7",
+            "PersonID": "946854802558598245363115&zwf=8a76d9e51c9e7e8747a697103c49d51d",
             "LastName": "SOKERO",
             "FirstName": "Tomi",
             "Goals": 0,

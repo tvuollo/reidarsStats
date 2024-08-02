@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import queryString from 'query-string';
-import { DataItem, StatGroup } from './Interfaces/TeamSeasonInterfaces.tsx';
+import { DataItem } from './Interfaces/TeamSeasonInterfaces.tsx';
 import AllPlayerData from './Sections/AllPlayerData.tsx';
 import AllTeamData from './Sections/AllTeamData.tsx';
 import SingleSeason from './Sections/SingleSeason.tsx';
@@ -17,6 +17,8 @@ const App = () => {
 
   const reidarsTeamId: string = "996011578";
   const dataPaths: string[] = [
+    '2012',
+    '2013',
     '2014',
     '2015',
     '2016',
@@ -40,7 +42,7 @@ const App = () => {
       let yearData: DataItem = JSON.parse("[]");
 
       try {
-        axios.get(`data/season${year}.json`)
+        axios.get(`data/season/season${year}.json`) 
           .then(res => yearData = res.data)
           .then(function () {
             yearData.FileName = year;
@@ -99,7 +101,7 @@ const App = () => {
         setActiveView("team");
         break;
       default:
-        setActiveView("home");
+        setActiveView("team");
     }
   }, [parsedQuery]);
 
@@ -108,7 +110,7 @@ const App = () => {
       {isLoading && <p>Loading...</p>}
       {!isLoading && masterData.length > 0 && (
         <>
-          {activeView !== "home" && (
+          {activeView !== "home" && activeView !== 'team' && parsedQuery.view !== null && (
             <a
               href="#"
               onClick={(e) => HandleBackButtonClick(e)}
@@ -116,6 +118,7 @@ const App = () => {
               &lsaquo; Takaisin
             </a>
           )}
+
           {activeView === "home" && (
             <Home
               Data={masterData}
@@ -149,16 +152,15 @@ const App = () => {
               StatGroupId={parsedQuery.seasonid}
             />
           )}
-          {/*
+          
           {activeView === "data" && (
             <DataView
               Data={masterData}
-              TeamId={reidarsTeamId}
             />
-          )}          
-          */}
-
-          {activeView !== "home" && (
+          )}              
+          
+          
+          {activeView !== "home" && activeView !== 'team' && parsedQuery.view !== null && (
             <a
               href="#"
               onClick={(e) => HandleBackButtonClick(e)}

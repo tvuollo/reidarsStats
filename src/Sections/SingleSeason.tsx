@@ -33,14 +33,23 @@ const SingleSeason = ({ Data, Filename, StatGroupId }: SingleSeasonProps) => {
             TopScorersEnabled: 1
         }
 
-        seasonTempData.Games = rootData.Games
-            .filter(games => games.StatGroupID === StatGroupId);
+        console.log(rootData);
+
+        if (rootData.Games[0].SerieID && rootData.Games[0].SerieID !== "") {
+            seasonTempData.Games = rootData.Games
+                .filter(games => games.SerieID === StatGroupId);
+        }
+        else {
+            seasonTempData.Games = rootData.Games
+                .filter(games => games.StatGroupID === StatGroupId);
+        }
+
         seasonTempData.Standings = rootData.Standings
             .filter(standing => standing.StatGroupID === StatGroupId);
         seasonTempData.StatGroups = rootData.StatGroups
             .filter(StatGroups => StatGroups.StatGroupID === StatGroupId);
 
-        const startDateArray = seasonTempData.Games[0].GameDate.split('.');
+        const startDateArray = rootData.Games[0].GameDate.split('.');
 
         if (seasonTempData.Standings[0].Teams[0].Ranking === "0") {
             seasonTempData.Standings[0].Teams = seasonTempData.Standings[0].Teams.sort((b, a) => Number(a.Points) - Number(b.Points));
@@ -48,8 +57,8 @@ const SingleSeason = ({ Data, Filename, StatGroupId }: SingleSeasonProps) => {
 
         setSeasonData(seasonTempData);
         setSeasonName(seasonTempData.StatGroups[0].StatGroupName + " " + startDateArray[2]);
-        setSeasonStartDate(seasonTempData.Games[0].GameDate);
-        setSeasonEndDate(seasonTempData.Games[seasonTempData.Games.length - 1].GameDate);
+        setSeasonStartDate(rootData.Games[0].GameDate);
+        setSeasonEndDate(rootData.Games[rootData.Games.length - 1].GameDate);
         setIsDataHandled(true);
     };
 
@@ -95,7 +104,7 @@ const SingleSeason = ({ Data, Filename, StatGroupId }: SingleSeasonProps) => {
                                     <th></th>
                                     <th className="reidars-datatable-td-center">Tulos</th>
                                     <th></th>
-                                    {seasonFileYear > 2015 &&
+                                    {seasonFileYear > 2010 &&
                                         <th>Linkit</th>
                                     }
                                 </tr>
@@ -107,17 +116,17 @@ const SingleSeason = ({ Data, Filename, StatGroupId }: SingleSeasonProps) => {
                                         <td className="reidars-datatable-td-right">{game.AwayTeamAbbreviation}</td>
                                         <td className="reidars-datatable-td-center">{game.AwayGoals}{" - "}{game.HomeGoals}</td>
                                         <td className="reidars-datatable-td-left">{game.HomeTeamAbbreviation}</td>
-                                        {seasonFileYear > 2015 &&
-                                            <td>
+                                        <td>
+                                            {Number(game.GameDate.split(".")[2]) > 2013 && game.StatGroupID !== "2278" &&
                                                 <strong>
                                                     <a
-                                                        href={`?view=game&year=${Filename}&season=${game.StatGroupID}&gameid=${game.GameID}`}
+                                                        href={`?view=game&year=${Filename}&season=${(game.StatGroupID ? game.StatGroupID : game.SerieID)}&gameid=${game.GameID}`}
                                                     >
                                                         Pelin tilastot &rsaquo;
                                                     </a>
                                                 </strong>
-                                            </td>
-                                        }
+                                            }
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

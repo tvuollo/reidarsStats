@@ -7,6 +7,7 @@ interface SeasonMetaData {
     Name: string;
     StartDate: string;
     StartDateTimeStamp: number;
+    StatGroupID: string;
 }
 
 interface AllTeamDataProps {
@@ -30,11 +31,18 @@ const AllTeamData = ({ Data, TeamId }: AllTeamDataProps) => {
 
         const metaData: SeasonMetaData = {
             EndDate: games[games.length - 1].GameDate,
-            Name: Data
-                .filter(season => season.FileName === FileName)[0].StatGroups
-                .filter(statgroup => statgroup.StatGroupID === StatGroupId)[0].StatGroupName,
+            Name:
+                Data.filter(season => season.FileName === FileName)[0].StatGroups.length > 1 ?
+                    Data.filter(season => season.FileName === FileName)[0].StatGroups
+                        .filter(statgroup => statgroup.StatGroupID === StatGroupId)[0].StatGroupName :
+                    Data.filter(season => season.FileName === FileName)[0].StatGroups[0].StatGroupName,
             StartDate: games[0].GameDate,
-            StartDateTimeStamp: Number(startDateArray[2] + startDateArray[1] + startDateArray[0])
+            StartDateTimeStamp: Number(startDateArray[2] + startDateArray[1] + startDateArray[0]),
+            StatGroupID:
+                Data.filter(season => season.FileName === FileName)[0].StatGroups.length > 1 ?
+                    Data.filter(season => season.FileName === FileName)[0].StatGroups
+                        .filter(statgroup => statgroup.StatGroupID === StatGroupId)[0].StatGroupID :
+                    Data.filter(season => season.FileName === FileName)[0].StatGroups[0].StatGroupID,
         };
 
         return metaData;
@@ -79,7 +87,7 @@ const AllTeamData = ({ Data, TeamId }: AllTeamDataProps) => {
                                 Standing: index + 1,
                                 StartDate: seasonMetaData.StartDate,
                                 StartDateTimeStamp: seasonMetaData.StartDateTimeStamp,
-                                StatGroupId: team.StatGroupID,
+                                StatGroupId: seasonMetaData.StatGroupID,
                                 StatGroupName: seasonMetaData.Name,
                                 Ties: Number(team.Ties),
                                 Wins: Number(team.Wins)
@@ -121,7 +129,8 @@ const AllTeamData = ({ Data, TeamId }: AllTeamDataProps) => {
         <>
             <div className="article__header">
                 <div className="articleheader">
-                    <h1 className="articletitle">Reidars joukkuetilastot</h1>
+                    {/* <h1 className="articletitle">Reidars joukkuetilastot</h1> */}
+                    <h1 className="articletitle">Reidars tilastokeskus</h1>
                     <p>
                         <small>Tilastodata aikaväliltä: {totalStartDate} - {totalEndDate}{" | "}Sisältää vain harrastesarjan pelit</small>
                     </p>
