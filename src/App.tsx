@@ -29,7 +29,8 @@ const App = () => {
     '2021',
     '2022',
     '2023',
-    '2024'
+    '2024',
+    '2025'
   ];
 
   const [masterData, setMasterData] = useState<DataItem[]>([])
@@ -152,14 +153,13 @@ const App = () => {
               StatGroupId={parsedQuery.seasonid}
             />
           )}
-          
+          {/*
           {activeView === "data" && (
             <DataView
               Data={masterData}
             />
-          )}              
-          
-          
+          )}                  
+          */}    
           {activeView !== "home" && activeView !== 'team' && parsedQuery.view !== null && (
             <a
               href="#"
