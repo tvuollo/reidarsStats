@@ -6,8 +6,6 @@ interface SeasonDetailPageProps {
   detail: TeamStatGroupDetail | null
   seasonKey: string
   statGroupId: string
-  targetTeamAbbreviation: string
-  seasonLabel: (seasonKey: string) => string
   hasGameEventsData: (gameId: string) => boolean
 }
 
@@ -15,8 +13,6 @@ function SeasonDetailPage({
   detail,
   seasonKey,
   statGroupId,
-  targetTeamAbbreviation,
-  seasonLabel,
   hasGameEventsData,
 }: SeasonDetailPageProps) {
   const rankingForIndex = (ranking: string, index: number): number => {
@@ -57,9 +53,7 @@ function SeasonDetailPage({
       <header className="article__header">
         <div className="articleheader">
           <h1 className="articletitle">{detail.statGroupName}</h1>
-          <p>
-            Season <code>{seasonLabel(detail.seasonKey)}</code> | Team <code>{targetTeamAbbreviation}</code>
-          </p>
+          <p>{detail.games[0].GameDate} - {detail.games[detail.games.length-1].GameDate}</p>
         </div>
       </header>
 
@@ -90,7 +84,7 @@ function SeasonDetailPage({
                     <tr key={`${team.TeamID}-${index}`}>
                       <th>{rankingForIndex(team.Ranking, index)}</th>
                       <td className="reidars-datatable-td-left">
-                        <strong>{teamLabel(teamCode, team.TeamName)}</strong>
+                        {teamLabel(teamCode, team.TeamName)}
                       </td>
                       <td>{team.Games}</td>
                       <td>
@@ -119,11 +113,11 @@ function SeasonDetailPage({
             <table className="reidars-datatable">
               <thead>
                 <tr>
-                  <th className="reidars-datatable-td-left">Date</th>
-                  <th className="reidars-datatable-td-left">Home</th>
-                  <th className="reidars-datatable-td-left">Away</th>
-                  <th>Result</th>
-                  <th>Events</th>
+                  <th className="reidars-datatable-td-left">Päivämäärä</th>
+                  <th className="reidars-datatable-td-left">Koti</th>
+                  <th className="reidars-datatable-td-left">Vieras</th>
+                  <th>Tulos</th>
+                  <th />
                 </tr>
               </thead>
               <tbody>
@@ -143,7 +137,7 @@ function SeasonDetailPage({
                       <td>
                         {hasGameEventsData(String(game.GameID)) ? (
                           <Link className="inline-link" to={`/game/${game.GameID}`}>
-                            Open &rsaquo;
+                            Pelin tiedot &rsaquo;
                           </Link>
                         ) : (
                           '-'

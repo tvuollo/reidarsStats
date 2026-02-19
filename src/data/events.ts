@@ -10,13 +10,28 @@ export interface LoadedEventGame {
 const eventModules = import.meta.glob('./events/*.json', {
   eager: true,
   import: 'default',
-}) as Record<string, unknown>
+  query: '?raw',
+}) as Record<string, string>
+
+function parseEventRecords(raw: string): EventGameRecord[] {
+  const trimmed = raw.trim()
+  if (!trimmed) {
+    return []
+  }
+
+  try {
+    const parsed = JSON.parse(trimmed)
+    return Array.isArray(parsed) ? (parsed as EventGameRecord[]) : []
+  } catch {
+    return []
+  }
+}
 
 export const loadedEventFiles = Object.entries(eventModules)
   .map(([path, value]) => ({
     path,
     fileKey: path.split('/').pop()?.replace('.json', '') ?? path,
-    records: value as EventGameRecord[],
+    records: parseEventRecords(value),
   }))
   .sort((a, b) => a.fileKey.localeCompare(b.fileKey))
 

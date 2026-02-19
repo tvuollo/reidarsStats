@@ -50,9 +50,9 @@ function DashboardPage({
           </div>
         </section>
 
-        <hr />
+        <hr style={{display: "none"}} />
 
-        <section className="articlebody">
+        <section className="articlebody" style={{display: "none"}}>
           <h2>0. Game Search</h2>
           <form className="search-form" onSubmit={handleSubmit}>
             <input
@@ -68,7 +68,7 @@ function DashboardPage({
           </form>
         </section>
 
-        <hr />
+        <hr style={{display: "none"}} />
 
         <section className="articlebody">
           <div className="reidars-table-wrapper">
@@ -102,7 +102,7 @@ function DashboardPage({
                         className="inline-link"
                         to={`/season/${statGroup.seasonKey}/${statGroup.statGroupId}`}
                       >
-                        Open &rsaquo;
+                        Kauden tilastot &rsaquo;
                       </Link>
                     </td>
                   </tr>
