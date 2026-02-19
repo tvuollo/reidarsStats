@@ -2,16 +2,13 @@ import './App.css'
 
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 
-import { TARGET_TEAM_ABBREVIATION, TARGET_TEAM_ID } from './constants/team'
+import { TARGET_TEAM_ABBREVIATION } from './constants/team'
 import { seasonLabel } from './data/seasons'
 import { getSingleGameViewData, hasSingleGameEventsData } from './features/gameEvents'
 import { searchGames } from './features/gameSearch'
 import {
   getReidarsStatGroupDetail,
-  reidarsInvalidSeasonFiles,
-  reidarsSeasonDataCompatible,
   reidarsTotals,
-  reidarsValidationResults,
 } from './features/reidarsStats'
 import DashboardPage from './views/DashboardPage'
 import SearchPage from './views/SearchPage'
@@ -68,13 +65,7 @@ function App() {
         path="/"
         element={
           <DashboardPage
-            validationResults={reidarsValidationResults}
-            invalidFiles={reidarsInvalidSeasonFiles}
-            isCompatible={reidarsSeasonDataCompatible}
             totals={reidarsTotals}
-            targetTeamId={TARGET_TEAM_ID}
-            targetTeamAbbreviation={TARGET_TEAM_ABBREVIATION}
-            seasonLabel={seasonLabel}
           />
         }
       />
