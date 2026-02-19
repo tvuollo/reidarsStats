@@ -65,46 +65,6 @@ function SeasonDetailPage({
 
       <section className="article__content">
         <div className="articlebody">
-          <h2 className="archiveitem__title">Tilastot</h2>
-          <div className="reidars-table-wrapper">
-            <table className="reidars-datatable">
-              <thead>
-                <tr>
-                  <th>Games</th>
-                  <th>Wins</th>
-                  <th>Ties</th>
-                  <th>OT Wins</th>
-                  <th>OT Losses</th>
-                  <th>Losses</th>
-                  <th>Goals For</th>
-                  <th>Goals Against</th>
-                  <th>Goal Diff</th>
-                  <th>Points</th>
-                  <th>Ranking</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{detail.totals.games}</td>
-                  <td>{detail.totals.wins}</td>
-                  <td>{detail.totals.ties}</td>
-                  <td>{detail.totals.otWins}</td>
-                  <td>{detail.totals.otLosses}</td>
-                  <td>{detail.totals.losses}</td>
-                  <td>{detail.totals.goalsFor}</td>
-                  <td>{detail.totals.goalsAgainst}</td>
-                  <td>{detail.totals.goalDiff}</td>
-                  <td>{detail.totals.points}</td>
-                  <td>{detail.standingRow.Ranking}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <section className="article__content">
-        <div className="articlebody">
           <h2 className="archiveitem__title">Sarjataulukko</h2>
           <div className="reidars-table-wrapper">
             <table className="reidars-datatable">

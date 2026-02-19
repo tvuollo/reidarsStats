@@ -108,6 +108,14 @@ function gameDateYear(gameDate: string): number | null {
   return date.getUTCFullYear()
 }
 
+function gameStatGroupId(game: SeasonGame): string {
+  return game.StatGroupID || game.SerieID || ''
+}
+
+function gameBelongsToStatGroup(game: SeasonGame, statGroupId: string): boolean {
+  return gameStatGroupId(game) === statGroupId
+}
+
 function teamWins(team: SeasonStandingTeam): number {
   return asNumber(team.Wins ?? team.Won)
 }
@@ -381,7 +389,7 @@ export function calculateTeamTotalsAcrossSeasons(
           statGroupId: standing.StatGroupID,
           statGroupName: standing.StatGroupName,
           year: season.data.Games
-            .filter((game) => game.StatGroupID === standing.StatGroupID)
+            .filter((game) => gameBelongsToStatGroup(game, standing.StatGroupID))
             .sort((a, b) => gameDateSortableValue(a.GameDate) - gameDateSortableValue(b.GameDate))
             .map((game) => gameDateYear(game.GameDate))
             .find((year): year is number => year !== null) ?? null,
@@ -457,8 +465,7 @@ export function getTeamStatGroupDetail(
 
   const totals = totalsFromTeam(standingRow)
   const games = season.data.Games.filter(
-    (game) =>
-      game.StatGroupID === statGroupId && (game.HomeTeamID === teamId || game.AwayTeamID === teamId),
+    (game) => gameBelongsToStatGroup(game, statGroupId) && (game.HomeTeamID === teamId || game.AwayTeamID === teamId),
   )
 
   const scorersFromData = season.data.TopScorers.filter((scorer) => {
