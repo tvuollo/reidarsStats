@@ -19,6 +19,19 @@ function SeasonDetailPage({
   seasonLabel,
   hasGameEventsData,
 }: SeasonDetailPageProps) {
+  const rankingForIndex = (ranking: string, index: number): number => {
+    const parsed = Number(ranking)
+    if (Number.isFinite(parsed) && parsed > 0) {
+      return parsed
+    }
+
+    return index + 1
+  }
+
+  const teamLabel = (teamAbbreviation?: string, teamName?: string): string => {
+    return teamAbbreviation || teamName || '-'
+  }
+
   if (!detail) {
     return (
       <main className="app">
@@ -92,6 +105,55 @@ function SeasonDetailPage({
 
       <section className="article__content">
         <div className="articlebody">
+          <h2 className="archiveitem__title">Sarjataulukko</h2>
+          <div className="reidars-table-wrapper">
+            <table className="reidars-datatable">
+              <thead>
+                <tr>
+                  <th>Sijoitus</th>
+                  <th className="reidars-datatable-td-left">Joukkue</th>
+                  <th>GP</th>
+                  <th>PTS</th>
+                  <th>W</th>
+                  <th>T</th>
+                  <th>L</th>
+                  <th>GF</th>
+                  <th>GA</th>
+                  <th>GD</th>
+                </tr>
+              </thead>
+              <tbody>
+                {detail.standings.map((team, index) => {
+                  const teamCode = team.TeamAbbreviation ?? team.TeamAbbrv;
+
+                  return (
+                    <tr key={`${team.TeamID}-${index}`}>
+                      <th>{rankingForIndex(team.Ranking, index)}</th>
+                      <td className="reidars-datatable-td-left">
+                        <strong>{teamLabel(teamCode, team.TeamName)}</strong>
+                      </td>
+                      <td>{team.Games}</td>
+                      <td>
+                        <strong>{team.Points}</strong>
+                      </td>
+                      <td>{team.Wins ?? team.Won ?? '0'}</td>
+                      <td>{team.Ties ?? team.Draw ?? '0'}</td>
+                      <td>{team.Looses ?? team.Lost ?? '0'}</td>
+                      <td>{team.GoalsFor}</td>
+                      <td>{team.GoalsAgainst}</td>
+                      <td>{team.GoalDiff}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section className="article__content">
+        <div className="articlebody">
+
           <h2 className="archiveitem__title">Pelit</h2>
           <div className="reidars-table-wrapper">
             <table className="reidars-datatable">
@@ -136,10 +198,21 @@ function SeasonDetailPage({
         </div>
       </section>
 
+      <p className="reidars-table-legend">
+        <span className="reidars-table-legend-span">GP: Pelejä pelattu</span>
+        <span className="reidars-table-legend-span">PTS: Pisteet</span>
+        <span className="reidars-table-legend-span">W: Voitot</span>
+        <span className="reidars-table-legend-span">T: Tasapelit</span>
+        <span className="reidars-table-legend-span">L: Tappiot</span>
+        <span className="reidars-table-legend-span">GF: Tehdyt maalit</span>
+        <span className="reidars-table-legend-span">GA: Päästetyt maalit</span>
+        <span className="reidars-table-legend-span">GD: Maaliero</span>
+      </p>
+
       <Link className="link reidars-backbutton" to="/">
         &lsaquo; Takaisin
       </Link>
-    </main>
+    </main >
   )
 }
 

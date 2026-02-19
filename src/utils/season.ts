@@ -46,6 +46,8 @@ export interface TeamStatGroupDetail {
   statGroupName: string
   totals: TeamTotals
   standingRow: SeasonStandingTeam
+  standings: SeasonStandingTeam[]
+  topTeam: SeasonStandingTeam | null
   games: SeasonGame[]
   topScorers: SeasonTopScorer[]
 }
@@ -98,6 +100,43 @@ function teamLosses(team: SeasonStandingTeam): number {
 
 function teamAbbreviation(team: SeasonStandingTeam): string {
   return team.TeamAbbreviation ?? team.TeamAbbrv ?? ''
+}
+
+function teamRanking(team: SeasonStandingTeam): number {
+  return asNumber(team.Ranking)
+}
+
+function sortStandingTeams(teams: SeasonStandingTeam[]): SeasonStandingTeam[] {
+  const sorted = [...teams].sort((a, b) => {
+    const aRank = teamRanking(a)
+    const bRank = teamRanking(b)
+
+    if (aRank > 0 && bRank > 0) {
+      return aRank - bRank
+    }
+
+    if (aRank > 0) {
+      return -1
+    }
+
+    if (bRank > 0) {
+      return 1
+    }
+
+    const pointDiff = asNumber(b.Points) - asNumber(a.Points)
+    if (pointDiff !== 0) {
+      return pointDiff
+    }
+
+    const goalDiff = asNumber(b.GoalDiff) - asNumber(a.GoalDiff)
+    if (goalDiff !== 0) {
+      return goalDiff
+    }
+
+    return teamAbbreviation(a).localeCompare(teamAbbreviation(b))
+  })
+
+  return sorted
 }
 
 function isStaffPlayer(roleName?: string, roleId?: number): boolean {
@@ -378,6 +417,9 @@ export function getTeamStatGroupDetail(
     return null
   }
 
+  const standings = sortStandingTeams(standing.Teams)
+  const topTeam = standings[0] ?? null
+
   const totals = totalsFromTeam(standingRow)
   const games = season.data.Games.filter(
     (game) =>
@@ -457,6 +499,8 @@ export function getTeamStatGroupDetail(
     statGroupName: standing.StatGroupName,
     totals,
     standingRow,
+    standings,
+    topTeam,
     games,
     topScorers,
   }
