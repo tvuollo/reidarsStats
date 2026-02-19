@@ -28,6 +28,7 @@ export interface TeamStatGroupBreakdown {
   seasonKey: string
   statGroupId: string
   statGroupName: string
+  year: number | null
   totals: TeamTotals
 }
 
@@ -76,6 +77,35 @@ function asNumber(value: unknown): number {
   }
 
   return 0
+}
+
+function gameDateSortableValue(gameDate: string): number {
+  const value = gameDate.trim()
+  const dotted = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(value)
+  if (dotted) {
+    const day = Number(dotted[1])
+    const month = Number(dotted[2])
+    const year = Number(dotted[3])
+    return year * 10000 + month * 100 + day
+  }
+
+  const timestamp = Date.parse(value)
+  return Number.isFinite(timestamp) ? timestamp : Number.POSITIVE_INFINITY
+}
+
+function gameDateYear(gameDate: string): number | null {
+  const value = gameDate.trim()
+  const dotted = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(value)
+  if (dotted) {
+    return Number(dotted[3])
+  }
+
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) {
+    return null
+  }
+
+  return date.getUTCFullYear()
 }
 
 function teamWins(team: SeasonStandingTeam): number {
@@ -350,6 +380,11 @@ export function calculateTeamTotalsAcrossSeasons(
           seasonKey: season.seasonKey,
           statGroupId: standing.StatGroupID,
           statGroupName: standing.StatGroupName,
+          year: season.data.Games
+            .filter((game) => game.StatGroupID === standing.StatGroupID)
+            .sort((a, b) => gameDateSortableValue(a.GameDate) - gameDateSortableValue(b.GameDate))
+            .map((game) => gameDateYear(game.GameDate))
+            .find((year): year is number => year !== null) ?? null,
           totals: rowTotals,
         })
 
