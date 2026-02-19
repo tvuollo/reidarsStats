@@ -75,8 +75,8 @@ function DashboardPage({
             <table className="reidars-datatable">
               <thead>
                 <tr>
-                  <th>Sarja</th>
-                  <th>Year</th>
+                  <th className="reidars-datatable-td-left">Vuosi</th>
+                  <th className="reidars-datatable-td-left">Sarja</th>
                   <th>GP</th>
                   <th>W</th>
                   <th>T</th>
@@ -87,10 +87,10 @@ function DashboardPage({
                 </tr>
               </thead>
               <tbody>
-                {totals.byStatGroup.map((statGroup) => (
+                {[...totals.byStatGroup].reverse().map((statGroup) => (
                   <tr key={`${statGroup.seasonKey}-${statGroup.statGroupId}`}>
+                    <td className="reidars-datatable-td-left">{statGroup.year ?? '-'}</td>
                     <td className="reidars-datatable-td-left">{statGroup.statGroupName}</td>
-                    <td>{statGroup.year ?? '-'}</td>
                     <td>{statGroup.totals.games}</td>
                     <td>{statGroup.totals.wins}</td>
                     <td>{statGroup.totals.ties}</td>
