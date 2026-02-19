@@ -22,11 +22,26 @@ const validSeasonKeys = new Set(
   validationResults.filter((result) => result.valid).map((result) => result.seasonKey),
 )
 
+function stripSensitivePlayerFields(data: SeasonData): SeasonData {
+  return {
+    ...data,
+    Players: data.Players.map((player) => {
+      const { DateOfBirth: _dateOfBirth, BirthDate: _birthDate, PlayerAge: _playerAge, ...safePlayer } =
+        player as SeasonData['Players'][number] & {
+          DateOfBirth?: unknown
+          BirthDate?: unknown
+          PlayerAge?: unknown
+        }
+      return safePlayer
+    }),
+  }
+}
+
 export const validSeasons = loadedSeasons
   .filter((season) => validSeasonKeys.has(season.seasonKey))
   .map((season) => ({
     seasonKey: season.seasonKey,
-    data: season.data as SeasonData,
+    data: stripSensitivePlayerFields(season.data as SeasonData),
   }))
 
 export function seasonLabel(seasonKey: string): string {

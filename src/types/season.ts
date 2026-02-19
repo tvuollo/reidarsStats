@@ -4,8 +4,6 @@ export type Nullable<T> = T | null
 
 export interface SeasonPlayer {
   PersonID: string
-  DateOfBirth?: string
-  BirthDate?: string
   LastName: string
   FirstName: string
   Name?: string
@@ -16,7 +14,6 @@ export interface SeasonPlayer {
   GameRole?: string
   TeamID?: string
   PlayerID?: string
-  PlayerAge?: MaybeNumeric
 }
 
 export interface SeasonContactPerson {
