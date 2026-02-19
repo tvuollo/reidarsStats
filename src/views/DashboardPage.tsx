@@ -100,7 +100,7 @@ function DashboardPage({
                         className="inline-link"
                         to={`/season/${statGroup.seasonKey}/${statGroup.statGroupId}`}
                       >
-                        Open
+                        Open &rsaquo;
                       </Link>
                     </td>
                   </tr>
