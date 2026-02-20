@@ -24,78 +24,73 @@ function SearchPage({ query, results }: SearchPageProps) {
   }
 
   return (
-    <main className="app">
-      <header className="app-header">
-        <h1>Game Search</h1>
-        <p>
-          Query: <code>{query}</code>
-        </p>
-        <p>
-          <Link className="inline-link" to="/">
-            Back to overview
-          </Link>
-        </p>
+    <main className="container reidars-stats-container">
+      <a className="link reidars-backbutton" href="/">
+        &lsaquo; Takaisin
+      </a>
+
+      <header className="article__header">
+        <div className="articleheader">
+          <h1 className="articletitle">Haku</h1>
+        </div>
       </header>
 
-      <section className="table-section">
-        <h2>Search</h2>
-        <form className="search-form" onSubmit={handleSubmit}>
-          <input
-            className="search-input"
-            type="search"
-            value={searchInput}
-            onChange={(event) => setSearchInput(event.target.value)}
-            placeholder="Search by team or player name"
-          />
-          <button className="search-button" type="submit">
-            Search
-          </button>
-        </form>
-      </section>
-
-      <section className="table-section">
-        <h2>Results ({results.length})</h2>
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Game</th>
-                <th>Result</th>
-                <th>StatGroup</th>
-                <th>Matched In</th>
-                <th>Open</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.length === 0 ? (
-                <tr>
-                  <td colSpan={6}>No games matched this search query.</td>
-                </tr>
-              ) : (
-                results.map((result) => (
-                  <tr key={result.gameId}>
-                    <td>{result.date}</td>
-                    <td>
-                      {result.homeTeamName} vs {result.awayTeamName}
-                    </td>
-                    <td>
-                      {result.homeGoals} - {result.awayGoals}
-                    </td>
-                    <td>{result.statGroupName}</td>
-                    <td>{result.matchedIn.join(', ')}</td>
-                    <td>
-                      <Link className="inline-link" to={`/game/${result.gameId}`}>
-                        Open game
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+      <section className="article__content">
+        <div className="articlebody">
+          <form className="search-form" onSubmit={handleSubmit}>
+            <input
+              className="search-input"
+              type="search"
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.target.value)}
+              placeholder="Search by team or player name"
+            />
+            <button className="search-button" type="submit">
+              Search
+            </button>
+          </form>
         </div>
       </section>
+
+      <section className="article__content">
+        <div className="articlebody">
+          <h2 className="archiveitem__title">Hakutuloksia ({results.length})</h2>
+          <div className="reidars-table-wrapper">
+            <table className="reidars-datatable">
+              <tbody>
+                {results.length === 0 ? (
+                  <tr>
+                    <td colSpan={6}>No games matched this search query.</td>
+                  </tr>
+                ) : (
+                  results.map((result) => (
+                    <tr key={result.gameId}>
+                      <td className="reidars-datatable-td-left">{result.date}</td>
+                      <td className="reidars-datatable-td-left">
+                        {result.homeTeamName} vs {result.awayTeamName}
+                      </td>
+                      <td className="reidars-datatable-td-left">
+                        {result.homeGoals} - {result.awayGoals}
+                      </td>
+                      <td className="reidars-datatable-td-left">{result.statGroupName}</td>
+                      <td className="reidars-datatable-td-left">{result.matchedIn.join(', ')}</td>
+                      <td>
+                        <a className="inline-link" href={`/game/${result.gameId}`}>
+                          <strong>Pelin tiedot &raquo;</strong>
+                        </a>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <a className="link reidars-backbutton" href="/">
+        &lsaquo; Takaisin
+      </a>
     </main>
   )
 }
