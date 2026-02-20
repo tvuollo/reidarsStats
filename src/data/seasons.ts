@@ -1,18 +1,54 @@
 import type { SeasonData } from '../types/season'
 import { getSeasonKeyFromPath, validateSeasonData } from '../utils/season'
 
-const seasonModules = import.meta.glob('./season/*.json', {
-  eager: true,
-  import: 'default',
-}) as Record<string, unknown>
+async function fetchText(path: string): Promise<string> {
+  try {
+    const response = await fetch(path)
+    if (!response.ok) {
+      return ''
+    }
 
-export const loadedSeasons = Object.entries(seasonModules)
-  .map(([path, data]) => ({
-    path,
-    seasonKey: getSeasonKeyFromPath(path),
-    data,
-  }))
-  .sort((a, b) => a.seasonKey.localeCompare(b.seasonKey))
+    return await response.text()
+  } catch {
+    return ''
+  }
+}
+
+function parseJson(raw: string): unknown | null {
+  const trimmed = raw.trim()
+  if (!trimmed) {
+    return null
+  }
+
+  try {
+    return JSON.parse(trimmed)
+  } catch {
+    return null
+  }
+}
+
+async function loadJsonFileIndex(path: string): Promise<string[]> {
+  const parsed = parseJson(await fetchText(path))
+  return Array.isArray(parsed)
+    ? parsed.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+    : []
+}
+
+const seasonFilenames = await loadJsonFileIndex('/data/season/index.json')
+
+export const loadedSeasons = (
+  await Promise.all(
+    seasonFilenames.map(async (filename) => {
+      const path = `/data/season/${filename}`
+      const data = parseJson(await fetchText(path))
+      return {
+        path,
+        seasonKey: getSeasonKeyFromPath(filename),
+        data,
+      }
+    }),
+  )
+).sort((a, b) => a.seasonKey.localeCompare(b.seasonKey))
 
 export const validationResults = loadedSeasons.map((season) =>
   validateSeasonData(season.data, season.seasonKey),

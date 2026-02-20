@@ -8,33 +8,59 @@ export interface LoadedEventGame {
   game: EventGameInfo
 }
 
-const eventModules = import.meta.glob('./events/*.json', {
-  eager: true,
-  import: 'default',
-  query: '?raw',
-}) as Record<string, string>
-
-function parseEventRecords(raw: string): EventGameRecord[] {
-  const trimmed = raw.trim()
-  if (!trimmed) {
-    return []
-  }
-
+async function fetchText(path: string): Promise<string> {
   try {
-    const parsed = JSON.parse(trimmed)
-    return Array.isArray(parsed) ? (parsed as EventGameRecord[]) : []
+    const response = await fetch(path)
+    if (!response.ok) {
+      return ''
+    }
+
+    return await response.text()
   } catch {
-    return []
+    return ''
   }
 }
 
-export const loadedEventFiles = Object.entries(eventModules)
-  .map(([path, value]) => ({
-    path,
-    fileKey: path.split('/').pop()?.replace('.json', '') ?? path,
-    records: parseEventRecords(value),
-  }))
-  .sort((a, b) => a.fileKey.localeCompare(b.fileKey))
+function parseJson(raw: string): unknown | null {
+  const trimmed = raw.trim()
+  if (!trimmed) {
+    return null
+  }
+
+  try {
+    return JSON.parse(trimmed)
+  } catch {
+    return null
+  }
+}
+
+async function loadJsonFileIndex(path: string): Promise<string[]> {
+  const parsed = parseJson(await fetchText(path))
+  return Array.isArray(parsed)
+    ? parsed.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+    : []
+}
+
+function parseEventRecords(raw: string): EventGameRecord[] {
+  const parsed = parseJson(raw)
+  return Array.isArray(parsed) ? (parsed as EventGameRecord[]) : []
+}
+
+const eventFilenames = await loadJsonFileIndex('/data/events/index.json')
+
+export const loadedEventFiles = (
+  await Promise.all(
+    eventFilenames.map(async (filename) => {
+      const path = `/data/events/${filename}`
+      const value = await fetchText(path)
+      return {
+        path,
+        fileKey: filename.replace('.json', ''),
+        records: parseEventRecords(value),
+      }
+    }),
+  )
+).sort((a, b) => a.fileKey.localeCompare(b.fileKey))
 
 export const loadedEventGames: LoadedEventGame[] = loadedEventFiles.flatMap((file) =>
   file.records
