@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 
+import { getEventTypeLabel } from '../features/eventTypes'
 import type { SingleGameViewData } from '../features/gameEvents'
 import type { EventGameTeam } from '../types/events'
 
@@ -15,24 +16,6 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
     }
     else {
       return HomeTeam.Name;
-    }
-  };
-
-  const GetEventType = (Type: string) => {
-    // GK_start, Goal, Penalty
-    switch (Type) {
-      case "GK_start":
-        return "Maalivahti aloittaa";
-      case "GK_in":
-        return "Maalivahti sisään";
-      case "GK_out":
-        return "Maalivahti pois";
-      case "Goal":
-        return "Maali";
-      case "Penalty":
-        return "Rangaistus";
-      default:
-        return "";
     }
   };
 
@@ -123,7 +106,7 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
                     <tr key={`${event.Type}-${event.TeamId}-${event.GameTime}-${index}`}>
                       <td className="reidars-datatable-td-left">{(event.GameTime / 60).toFixed(2)}</td>
                       <td className="reidars-datatable-td-left">
-                        {GetEventType(event.Type)}<br />
+                        {getEventTypeLabel(event.Type)}<br />
                         <small>{GetTeamNameById(event.TeamId, game.AwayTeam, game.HomeTeam)}</small>
                       </td>
                       <td className="reidars-datatable-td-left">

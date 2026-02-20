@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import type { GameSearchResult } from '../features/gameSearch'
+import { generateMatchedString } from '../features/searchResult'
 
 interface SearchPageProps {
   query: string
@@ -65,15 +66,16 @@ function SearchPage({ query, results }: SearchPageProps) {
                 ) : (
                   results.map((result) => (
                     <tr key={result.gameId}>
-                      <td className="reidars-datatable-td-left">{result.date}</td>
+                      <td className="reidars-datatable-td-left">
+                        {result.date}<br />{result.statGroupName}
+                      </td>
                       <td className="reidars-datatable-td-left">
                         {result.homeTeamName} vs {result.awayTeamName}
                       </td>
                       <td className="reidars-datatable-td-left">
                         {result.homeGoals} - {result.awayGoals}
                       </td>
-                      <td className="reidars-datatable-td-left">{result.statGroupName}</td>
-                      <td className="reidars-datatable-td-left">{result.matchedIn.join(', ')}</td>
+                      <td className="reidars-datatable-td-left">{generateMatchedString(result.matchedIn, result.matchedPlayerLogs)}</td>
                       <td>
                         <a className="inline-link" href={`/game/${result.gameId}`}>
                           <strong>Pelin tiedot &raquo;</strong>
