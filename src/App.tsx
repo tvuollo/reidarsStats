@@ -2,8 +2,6 @@ import './App.css'
 
 import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 
-import { TARGET_TEAM_ABBREVIATION } from './constants/team'
-import { seasonLabel } from './data/seasons'
 import { getSingleGameViewData, hasSingleGameEventsData } from './features/gameEvents'
 import { searchGames } from './features/gameSearch'
 import {
@@ -29,8 +27,6 @@ function SeasonDetailRoute() {
       detail={detail}
       seasonKey={params.seasonKey}
       statGroupId={params.statGroupId}
-      targetTeamAbbreviation={TARGET_TEAM_ABBREVIATION}
-      seasonLabel={seasonLabel}
       hasGameEventsData={hasSingleGameEventsData}
     />
   )
@@ -43,7 +39,7 @@ function SingleGameRoute() {
   }
 
   const data = getSingleGameViewData(params.gameId)
-  return <SingleGamePage data={data} gameId={params.gameId} seasonLabel={seasonLabel} />
+  return <SingleGamePage data={data} gameId={params.gameId} />
 }
 
 function SearchRoute() {

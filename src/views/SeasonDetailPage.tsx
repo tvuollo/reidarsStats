@@ -161,18 +161,20 @@ function SeasonDetailPage({
         </div>
       </section>
 
+      {/*
       <section className="article__content">
         <div className="articlebody">
           <h3 className="archiveitem__title">Linkit</h3>
           <a
             className="reidars-external-link-button"
-            href={`https://tulospalvelu.leijonat.fi/serie/?season=2014&lid=71&did=5&stgid=9153`}
+            href={`https://tulospalvelu.leijonat.fi/serie/?season=${detail.seasonKey.replace("season", "")}&lid=${detail.levelId}&did=${detail.areaId}&stgid=${detail.statGroupId}`}
             target="_blank"
           >
-            Peli tulospalvelussa <strong>&raquo;</strong>
+            Kausi tulospalvelussa <strong>&raquo;</strong>
           </a>
         </div>
       </section>
+*/}
 
       <Link className="link reidars-backbutton" to="/">
         &lsaquo; Takaisin

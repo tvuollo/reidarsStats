@@ -45,6 +45,8 @@ export interface TeamStatGroupDetail {
   seasonKey: string
   statGroupId: string
   statGroupName: string
+  levelId: string
+  areaId: string | null
   totals: TeamTotals
   standingRow: SeasonStandingTeam
   standings: SeasonStandingTeam[]
@@ -467,6 +469,9 @@ export function getTeamStatGroupDetail(
   const games = season.data.Games.filter(
     (game) => gameBelongsToStatGroup(game, statGroupId) && (game.HomeTeamID === teamId || game.AwayTeamID === teamId),
   )
+  const statGroup = season.data.StatGroups.find((item) => item.StatGroupID === statGroupId)
+  const levelId = statGroup?.LevelID ?? standing.LevelID
+  const areaId = statGroup?.AreaID ?? games.find((game) => typeof game.AreaID === 'string')?.AreaID ?? null
 
   const scorersFromData = season.data.TopScorers.filter((scorer) => {
     if (scorer.StatGroupID && scorer.StatGroupID !== statGroupId) {
@@ -539,6 +544,8 @@ export function getTeamStatGroupDetail(
     seasonKey,
     statGroupId,
     statGroupName: standing.StatGroupName,
+    levelId,
+    areaId,
     totals,
     standingRow,
     standings,

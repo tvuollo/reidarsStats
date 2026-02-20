@@ -6,10 +6,9 @@ import type { EventGameTeam } from '../types/events'
 interface SingleGamePageProps {
   data: SingleGameViewData | null
   gameId: string
-  seasonLabel: (seasonKey: string) => string
 }
 
-function SingleGamePage({ data, gameId, seasonLabel }: SingleGamePageProps) {
+function SingleGamePage({ data, gameId }: SingleGamePageProps) {
   const GetTeamNameById = (Id: number, AwayTeam: EventGameTeam, HomeTeam: EventGameTeam) => {
     if (AwayTeam.Id == Id) {
       return AwayTeam.Name;
@@ -57,7 +56,7 @@ function SingleGamePage({ data, gameId, seasonLabel }: SingleGamePageProps) {
 
   return (
     <main className="container reidars-stats-container">
-      <Link className="link reidars-backbutton" to="/">
+      <Link className="link reidars-backbutton" to={`/season/${data.seasonGame?.seasonKey}/${data.seasonGame?.StatGroupID}`}>
         &lsaquo; Takaisin
       </Link>
 
@@ -191,7 +190,7 @@ function SingleGamePage({ data, gameId, seasonLabel }: SingleGamePageProps) {
         </div>
       </section>
 
-      <Link className="link reidars-backbutton" to="/">
+      <Link className="link reidars-backbutton" to={`/season/${data.seasonGame?.seasonKey}/${data.seasonGame?.StatGroupID}`}>
         &lsaquo; Takaisin
       </Link>
     </main>
