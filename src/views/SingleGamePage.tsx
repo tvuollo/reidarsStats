@@ -56,9 +56,9 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
 
   return (
     <main className="container reidars-stats-container">
-      <Link className="link reidars-backbutton" to={`/season/${data.seasonGame?.seasonKey}/${data.seasonGame?.StatGroupID}`}>
+      <a className="link reidars-backbutton" href={`/season/${data.seasonGame?.seasonKey}/${data.seasonGame?.StatGroupID}`}>
         &lsaquo; Takaisin
-      </Link>
+      </a>
 
       <header className="article__header">
         <div className="articleheader">
@@ -190,9 +190,9 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
         </div>
       </section>
 
-      <Link className="link reidars-backbutton" to={`/season/${data.seasonGame?.seasonKey}/${data.seasonGame?.StatGroupID}`}>
+      <a className="link reidars-backbutton" href={`/season/${data.seasonGame?.seasonKey}/${data.seasonGame?.StatGroupID}`}>
         &lsaquo; Takaisin
-      </Link>
+      </a>
     </main>
   )
 }

@@ -46,9 +46,9 @@ function SeasonDetailPage({
 
   return (
     <main className="container reidars-stats-container">
-      <Link className="link reidars-backbutton" to="/">
+      <a className="link reidars-backbutton" href="/">
         &lsaquo; Takaisin
-      </Link>
+      </a>
 
       <header className="article__header">
         <div className="articleheader">
@@ -145,9 +145,9 @@ function SeasonDetailPage({
                       </td>
                       <td>
                         {(hasGameEventsData(String(game.GameID))) ? (
-                          <Link className="inline-link" to={`/game/${game.GameID}`}>
+                          <a className="inline-link" href={`/game/${game.GameID}`}>
                             <strong>Pelin tiedot &raquo;</strong>
-                          </Link>
+                          </a>
                         ) : (
                           '-'
                         )}
@@ -176,9 +176,9 @@ function SeasonDetailPage({
       </section>
 */}
 
-      <Link className="link reidars-backbutton" to="/">
+      <a className="link reidars-backbutton" href="/">
         &lsaquo; Takaisin
-      </Link>
+      </a>
     </main >
   )
 }

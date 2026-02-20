@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import type { TeamTotalsSummary } from '../utils/season'
 
@@ -12,7 +12,7 @@ function DashboardPage({
   totals,
 }: DashboardPageProps) {
   const navigate = useNavigate()
-  const [searchInput, setSearchInput] = useState('')
+  const [searchInput] = useState('')
   const sortedStatGroups = [...totals.byStatGroup].sort((a, b) => {
     if (!a.startDate && !b.startDate) {
       return 0
@@ -111,13 +111,13 @@ function DashboardPage({
                 {sortedStatGroups.map((statGroup) => (
                   <tr key={`${statGroup.seasonKey}-${statGroup.statGroupId}`}>
                     <th>
-                      <Link
+                      <a
                         className="inline-link"
-                        to={`/season/${statGroup.seasonKey}/${statGroup.statGroupId}`}
+                        href={`/season/${statGroup.seasonKey}/${statGroup.statGroupId}`}
                       >
                         {statGroup.startDate} - {statGroup.endDate}<br />
                         {statGroup.statGroupName} &raquo;
-                      </Link>
+                      </a>
                     </th>
                     <td>{statGroup.totals.games}</td>
                     <td>{statGroup.totals.wins}</td>
