@@ -120,28 +120,28 @@
     align-items: flex-start;
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -1rem;
+    margin: 0 -1rem 1rem;
 }
 
 .reidars-home-total {
     display: block;
     flex: 0 0 calc(50% - 2rem);
     font-weight: 700;
-    margin: 0 1rem 1rem;
+    margin: 0 1rem 2rem;
     text-transform: uppercase;
 }
 
 .reidars-home-total-number {
     color: #002fa3;
     display: block;
-    font-size: 4rem;
+    font-size: clamp(2rem, calc(2rem + 48*((100vw - 600px) / 840)), 4rem);
     font-weight: 700;
     line-height: .85em;
     text-transform: uppercase;
 }
 
 .reidars-home-links {
-padding-top: 2rem;
+    padding-top: 2rem;
 }
 
 .reidars-home-link {
@@ -176,5 +176,60 @@ padding-top: 2rem;
     .reidars-home-link {
         flex: 0 0 calc(100% / 3 - 2rem);
         margin: 0 1rem 2rem;
+    }
+}
+
+.search-form {
+    background-color: #f0f0f0;
+    border-radius: .5rem;
+    margin: 1rem 0;
+    max-width: 40rem;
+    padding: 1rem;
+}
+
+.search-input {
+    background: #fff;
+    ;
+    border: 1px solid #ddd;
+    border-radius: .5rem;
+    display: block;
+    flex: 1;
+    font-size: 1rem;
+    margin: 0 0 1rem 0;
+    padding: 1rem;
+    width: 100%;
+}
+
+.search-button {
+    background-color: #002fa3;
+    border: none;
+    border-radius: .5rem;
+    color: #fff;
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 1rem 3rem;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.search-button:hover,
+.search-button:focus,
+.search-button:active {
+    background-color: #001f66;
+}
+
+@media (min-width: 768px) {
+    .search-form {
+        display: flex;
+        padding: 2rem;
+    }
+
+    .search-input {
+        margin: 0 1rem 0 0;
+    }
+
+    .search-button {
+        width: auto;
     }
 }

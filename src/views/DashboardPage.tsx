@@ -12,7 +12,7 @@ function DashboardPage({
   totals,
 }: DashboardPageProps) {
   const navigate = useNavigate()
-  const [searchInput] = useState('')
+  const [searchInput, setSearchInput] = useState('')
   const sortedStatGroups = [...totals.byStatGroup].sort((a, b) => {
     if (!a.startDate && !b.startDate) {
       return 0
@@ -52,47 +52,44 @@ function DashboardPage({
         </div>
       </header>
 
+      <section className="articlebody">
+        <div className="reidars-home-totals">
+          <p className="reidars-home-total">
+            Pelejä<span className="reidars-home-total-number">{totals.totals.games}</span>
+          </p>
+          <p className="reidars-home-total">
+            Voittoja<span className="reidars-home-total-number">{totals.totals.wins}</span>
+          </p>
+          <p className="reidars-home-total">
+            Tasapelejä<span className="reidars-home-total-number">{totals.totals.ties}</span>
+          </p>
+          <p className="reidars-home-total">
+            Tappioita<span className="reidars-home-total-number">{totals.totals.losses}</span>
+          </p>
+        </div>
+      </section>
+
       <div className="article__content">
         <section className="articlebody">
-          <div className="reidars-home-totals">
-            <p className="reidars-home-total">
-              Pelejä<span className="reidars-home-total-number">{totals.totals.games}</span>
-            </p>
-            <p className="reidars-home-total">
-              Voittoja<span className="reidars-home-total-number">{totals.totals.wins}</span>
-            </p>
-            <p className="reidars-home-total">
-              Tasapelejä<span className="reidars-home-total-number">{totals.totals.ties}</span>
-            </p>
-            <p className="reidars-home-total">
-              Tappioita<span className="reidars-home-total-number">{totals.totals.losses}</span>
-            </p>
-          </div>
-        </section>
-
-        {/*
-        <hr />
-
-        <section className="articlebody">
-          <h2>0. Game Search</h2>
+          <h2 className="archiveitem__title">Hae pelejä</h2>
           <form className="search-form" onSubmit={handleSubmit}>
             <input
               className="search-input"
               type="search"
               value={searchInput}
               onChange={(event) => setSearchInput(event.target.value)}
-              placeholder="Search games by team or player"
+              placeholder="Hae joukkueen tai pelaajan nimellä..."
             />
             <button className="search-button" type="submit">
-              Search
+              Hae
             </button>
           </form>
         </section>
+      </div>
 
-        <hr />
-        */}
-
+      <div className="article__content">
         <section className="articlebody">
+          <h2 className="archiveitem__title">Kaudet</h2>
           <div className="reidars-table-wrapper">
             <table className="reidars-datatable">
               <thead>
