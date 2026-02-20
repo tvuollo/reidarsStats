@@ -146,7 +146,7 @@ function SeasonDetailPage({
                       <td>
                         {(hasGameEventsData(String(game.GameID))) ? (
                           <Link className="inline-link" to={`/game/${game.GameID}`}>
-                            Pelin tiedot &rsaquo;
+                            <strong>Pelin tiedot &raquo;</strong>
                           </Link>
                         ) : (
                           '-'

@@ -130,7 +130,7 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
                         {event.Type === "Goal" && (
                           <>
                             {event.ScorerName}<br />
-                            {event.FirstAssistName && (
+                            {event.FirstAssistName !== undefined && event.FirstAssistName !== " " && (
                               <>
                                 {"Syöttäjät: "}
                                 {event.FirstAssistName}
