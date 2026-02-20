@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import type { GameSearchResult } from '../features/gameSearch'
+import { gameUrl, homeUrl, searchUrl } from '../features/queryRoutes'
 import { generateMatchedString } from '../features/searchResult'
 
 interface SearchPageProps {
@@ -21,12 +22,12 @@ function SearchPage({ query, results }: SearchPageProps) {
       return
     }
 
-    navigate(`/search/${encodeURIComponent(trimmed)}`)
+    navigate(searchUrl(trimmed))
   }
 
   return (
     <main className="container reidars-stats-container">
-      <a className="link reidars-backbutton" href="/">
+      <a className="link reidars-backbutton" href={homeUrl()}>
         &lsaquo; Takaisin
       </a>
 
@@ -77,7 +78,7 @@ function SearchPage({ query, results }: SearchPageProps) {
                       </td>
                       <td className="reidars-datatable-td-left">{generateMatchedString(result.matchedIn, result.matchedPlayerLogs)}</td>
                       <td>
-                        <a className="inline-link" href={`/game/${result.gameId}`}>
+                        <a className="inline-link" href={gameUrl(result.gameId)}>
                           <strong>Pelin tiedot &raquo;</strong>
                         </a>
                       </td>
@@ -90,7 +91,7 @@ function SearchPage({ query, results }: SearchPageProps) {
         </div>
       </section>
 
-      <a className="link reidars-backbutton" href="/">
+      <a className="link reidars-backbutton" href={homeUrl()}>
         &lsaquo; Takaisin
       </a>
     </main>

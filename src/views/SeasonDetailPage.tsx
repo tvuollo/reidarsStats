@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom'
-
+import { gameUrl, homeUrl } from '../features/queryRoutes'
 import type { TeamStatGroupDetail } from '../utils/season'
 
 interface SeasonDetailPageProps {
@@ -36,9 +35,9 @@ function SeasonDetailPage({
           <p>
             No data found for season <code>{seasonKey}</code> and StatGroup <code>{statGroupId}</code>.
           </p>
-          <Link className="inline-link" to="/">
+          <a className="inline-link" href={homeUrl()}>
             Back to overview
-          </Link>
+          </a>
         </header>
       </main>
     )
@@ -46,7 +45,7 @@ function SeasonDetailPage({
 
   return (
     <main className="container reidars-stats-container">
-      <a className="link reidars-backbutton" href="/">
+      <a className="link reidars-backbutton" href={homeUrl()}>
         &lsaquo; Takaisin
       </a>
 
@@ -145,7 +144,7 @@ function SeasonDetailPage({
                       </td>
                       <td>
                         {(hasGameEventsData(String(game.GameID))) ? (
-                          <a className="inline-link" href={`/game/${game.GameID}`}>
+                          <a className="inline-link" href={gameUrl(String(game.GameID))}>
                             <strong>Pelin tiedot &raquo;</strong>
                           </a>
                         ) : (
@@ -176,7 +175,7 @@ function SeasonDetailPage({
       </section>
 */}
 
-      <a className="link reidars-backbutton" href="/">
+      <a className="link reidars-backbutton" href={homeUrl()}>
         &lsaquo; Takaisin
       </a>
     </main >

@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom'
-
 import { getEventTypeLabel } from '../features/eventTypes'
 import type { SingleGameViewData } from '../features/gameEvents'
+import { homeUrl, seasonUrl } from '../features/queryRoutes'
 import type { EventGameTeam } from '../types/events'
 
 interface SingleGamePageProps {
@@ -19,6 +18,11 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
     }
   };
 
+  const seasonBackUrl =
+    data?.seasonGame &&
+    (data.seasonGame.StatGroupID || data.seasonGame.SerieID) &&
+    seasonUrl(data.seasonGame.seasonKey, data.seasonGame.StatGroupID || data.seasonGame.SerieID || '')
+
   if (!data) {
     return (
       <main className="app">
@@ -27,9 +31,9 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
           <p>
             No events data found for game ID <code>{gameId}</code>.
           </p>
-          <Link className="inline-link" to="/">
+          <a className="inline-link" href={homeUrl()}>
             Back to overview
-          </Link>
+          </a>
         </header>
       </main>
     )
@@ -39,7 +43,7 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
 
   return (
     <main className="container reidars-stats-container">
-      <a className="link reidars-backbutton" href={`/season/${data.seasonGame?.seasonKey}/${data.seasonGame?.StatGroupID}`}>
+      <a className="link reidars-backbutton" href={seasonBackUrl || homeUrl()}>
         &lsaquo; Takaisin
       </a>
 
@@ -173,7 +177,7 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
         </div>
       </section>
 
-      <a className="link reidars-backbutton" href={`/season/${data.seasonGame?.seasonKey}/${data.seasonGame?.StatGroupID}`}>
+      <a className="link reidars-backbutton" href={seasonBackUrl || homeUrl()}>
         &lsaquo; Takaisin
       </a>
     </main>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { searchUrl, seasonUrl } from '../features/queryRoutes'
 import type { TeamTotalsSummary } from '../utils/season'
 
 interface DashboardPageProps {
@@ -41,7 +42,7 @@ function DashboardPage({
       return
     }
 
-    navigate(`/search/${encodeURIComponent(trimmed)}`)
+    navigate(searchUrl(trimmed))
   }
 
   return (
@@ -110,7 +111,7 @@ function DashboardPage({
                     <th>
                       <a
                         className="inline-link"
-                        href={`/season/${statGroup.seasonKey}/${statGroup.statGroupId}`}
+                        href={seasonUrl(statGroup.seasonKey, statGroup.statGroupId)}
                       >
                         {statGroup.startDate} - {statGroup.endDate}<br />
                         {statGroup.statGroupName} &raquo;
