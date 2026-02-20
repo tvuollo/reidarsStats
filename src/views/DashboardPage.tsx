@@ -13,6 +13,26 @@ function DashboardPage({
 }: DashboardPageProps) {
   const navigate = useNavigate()
   const [searchInput, setSearchInput] = useState('')
+  const sortedStatGroups = [...totals.byStatGroup].sort((a, b) => {
+    if (!a.startDate && !b.startDate) {
+      return 0
+    }
+
+    if (!a.startDate) {
+      return 1
+    }
+
+    if (!b.startDate) {
+      return -1
+    }
+
+    const [aDay, aMonth, aYear] = a.startDate.split('.').map(Number)
+    const [bDay, bMonth, bYear] = b.startDate.split('.').map(Number)
+    const aTime = new Date(aYear ?? 0, (aMonth ?? 1) - 1, aDay ?? 1).getTime()
+    const bTime = new Date(bYear ?? 0, (bMonth ?? 1) - 1, bDay ?? 1).getTime()
+
+    return bTime - aTime
+  })
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -70,7 +90,7 @@ function DashboardPage({
         </section>
 
         <hr />
-*/}
+        */}
 
         <section className="articlebody">
           <div className="reidars-table-wrapper">
@@ -88,7 +108,7 @@ function DashboardPage({
                 </tr>
               </thead>
               <tbody>
-                {[...totals.byStatGroup].reverse().map((statGroup) => (
+                {sortedStatGroups.map((statGroup) => (
                   <tr key={`${statGroup.seasonKey}-${statGroup.statGroupId}`}>
                     <th>
                       <Link
