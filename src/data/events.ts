@@ -1,4 +1,5 @@
 import type { EventGameInfo, EventGameRecord } from '../types/events'
+import { excludedGameIds } from './seasons'
 
 export interface LoadedEventGame {
   fileKey: string
@@ -50,7 +51,8 @@ export const loadedEventGames: LoadedEventGame[] = loadedEventFiles.flatMap((fil
         game,
       }
     })
-    .filter((entry): entry is LoadedEventGame => entry !== null),
+    .filter((entry): entry is LoadedEventGame => entry !== null)
+    .filter((entry) => !excludedGameIds.has(entry.gameId)),
 )
 
 export const eventGamesById = loadedEventGames.reduce((map, entry) => {
