@@ -144,7 +144,7 @@ function SeasonDetailPage({
                         {game.HomeGoals} - {game.AwayGoals}
                       </td>
                       <td>
-                        {hasGameEventsData(String(game.GameID)) ? (
+                        {(hasGameEventsData(String(game.GameID))) ? (
                           <Link className="inline-link" to={`/game/${game.GameID}`}>
                             Pelin tiedot &rsaquo;
                           </Link>

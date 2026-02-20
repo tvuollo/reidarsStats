@@ -86,20 +86,20 @@ function SingleGamePage({ data, gameId }: SingleGamePageProps) {
               <span className="gamescore__score">
                 {game.AwayTeam.Name}
                 {"  "}
-                {game.AwayTeam.Goals}
+                {data.gameLogsSorted.length === 0 ? "" : game.AwayTeam.Goals}
                 {"  -  "}
-                {game.HomeTeam.Goals}
+                {data.gameLogsSorted.length === 0 ? "" : game.HomeTeam.Goals}
                 {"  "}
                 {game.HomeTeam.Name}
               </span>
               <span className="gamescore__team gamescore__team--away"></span>
             </div>
           </div>
-          <p className="gameitem__scorers">Yleisöä: {game.Spectators}</p>
+          {data.gameLogsSorted.length > 0 ? (<p className="gameitem__scorers">Yleisöä: {game.Spectators}</p>) : null}
         </div>
       </section>
 
-      <section className="article__content">
+      <section className="article__content" style={data.gameLogsSorted.length === 0 ? { display: "none" } : undefined}>
         <div className="articlebody">
           <h2 className="archiveitem__title">Tapahtumat</h2>
           <div className="reidars-table-wrapper">
