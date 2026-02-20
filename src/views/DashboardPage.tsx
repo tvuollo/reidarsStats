@@ -50,9 +50,10 @@ function DashboardPage({
           </div>
         </section>
 
-        <hr style={{display: "none"}} />
+        {/*
+        <hr />
 
-        <section className="articlebody" style={{display: "none"}}>
+        <section className="articlebody">
           <h2>0. Game Search</h2>
           <form className="search-form" onSubmit={handleSubmit}>
             <input
@@ -68,14 +69,14 @@ function DashboardPage({
           </form>
         </section>
 
-        <hr style={{display: "none"}} />
+        <hr />
+*/}
 
         <section className="articlebody">
           <div className="reidars-table-wrapper">
             <table className="reidars-datatable">
               <thead>
                 <tr>
-                  <th className="reidars-datatable-td-left">Vuosi</th>
                   <th className="reidars-datatable-td-left">Sarja</th>
                   <th>GP</th>
                   <th>W</th>
@@ -83,28 +84,28 @@ function DashboardPage({
                   <th>L</th>
                   <th>GF</th>
                   <th>GA</th>
-                  <th />
+                  <th>Sijoitus</th>
                 </tr>
               </thead>
               <tbody>
                 {[...totals.byStatGroup].reverse().map((statGroup) => (
                   <tr key={`${statGroup.seasonKey}-${statGroup.statGroupId}`}>
-                    <td className="reidars-datatable-td-left">{statGroup.year ?? '-'}</td>
-                    <td className="reidars-datatable-td-left">{statGroup.statGroupName}</td>
+                    <th>
+                      <Link
+                        className="inline-link"
+                        to={`/season/${statGroup.seasonKey}/${statGroup.statGroupId}`}
+                      >
+                        {statGroup.startDate} - {statGroup.endDate}<br />
+                        {statGroup.statGroupName} &raquo;
+                      </Link>
+                    </th>
                     <td>{statGroup.totals.games}</td>
                     <td>{statGroup.totals.wins}</td>
                     <td>{statGroup.totals.ties}</td>
                     <td>{statGroup.totals.losses}</td>
                     <td>{statGroup.totals.goalsFor}</td>
                     <td>{statGroup.totals.goalsAgainst}</td>
-                    <td>
-                      <Link
-                        className="inline-link"
-                        to={`/season/${statGroup.seasonKey}/${statGroup.statGroupId}`}
-                      >
-                        Kauden tilastot &rsaquo;
-                      </Link>
-                    </td>
+                    <td>{statGroup.totals.rank}</td>
                   </tr>
                 ))}
               </tbody>

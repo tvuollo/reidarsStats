@@ -13,6 +13,7 @@ export interface SeasonValidationResult {
 
 export interface TeamTotals {
   games: number
+  rank: number | null
   wins: number
   ties: number
   otWins: number
@@ -29,6 +30,8 @@ export interface TeamStatGroupBreakdown {
   statGroupId: string
   statGroupName: string
   year: number | null
+  startDate: string | null
+  endDate: string | null
   totals: TeamTotals
 }
 
@@ -283,6 +286,7 @@ function deduplicateScorers(rows: SeasonTopScorer[]): SeasonTopScorer[] {
 function emptyTotals(): TeamTotals {
   return {
     games: 0,
+    rank: null,
     wins: 0,
     ties: 0,
     otWins: 0,
@@ -296,8 +300,11 @@ function emptyTotals(): TeamTotals {
 }
 
 function totalsFromTeam(team: SeasonStandingTeam): TeamTotals {
+  const rank = teamRanking(team)
+
   return {
     games: asNumber(team.Games),
+    rank: rank > 0 ? rank : null,
     wins: teamWins(team),
     ties: teamTies(team),
     otWins: teamOtWins(team),
@@ -385,16 +392,21 @@ export function calculateTeamTotalsAcrossSeasons(
 
         matchedSeasons.add(season.seasonKey)
         const rowTotals = totalsFromTeam(team)
+        if (rowTotals.rank === null) {
+          const fallbackRank = sortStandingTeams(standing.Teams).findIndex((item) => item.TeamID === team.TeamID) + 1
+          rowTotals.rank = fallbackRank > 0 ? fallbackRank : null
+        }
+        const statGroupGames = season.data.Games
+          .filter((game) => gameBelongsToStatGroup(game, standing.StatGroupID))
+          .sort((a, b) => gameDateSortableValue(a.GameDate) - gameDateSortableValue(b.GameDate))
 
         byStatGroup.push({
           seasonKey: season.seasonKey,
           statGroupId: standing.StatGroupID,
           statGroupName: standing.StatGroupName,
-          year: season.data.Games
-            .filter((game) => gameBelongsToStatGroup(game, standing.StatGroupID))
-            .sort((a, b) => gameDateSortableValue(a.GameDate) - gameDateSortableValue(b.GameDate))
-            .map((game) => gameDateYear(game.GameDate))
-            .find((year): year is number => year !== null) ?? null,
+          year: statGroupGames.map((game) => gameDateYear(game.GameDate)).find((year): year is number => year !== null) ?? null,
+          startDate: statGroupGames[0]?.GameDate ?? null,
+          endDate: statGroupGames[statGroupGames.length - 1]?.GameDate ?? null,
           totals: rowTotals,
         })
 
