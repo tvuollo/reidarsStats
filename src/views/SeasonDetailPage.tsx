@@ -53,7 +53,7 @@ function SeasonDetailPage({
       <header className="article__header">
         <div className="articleheader">
           <h1 className="articletitle">{detail.statGroupName}</h1>
-          <p>{detail.games[0].GameDate} - {detail.games[detail.games.length-1].GameDate}</p>
+          <p>{detail.games[0].GameDate} - {detail.games[detail.games.length - 1].GameDate}</p>
         </div>
       </header>
 
@@ -102,12 +102,21 @@ function SeasonDetailPage({
               </tbody>
             </table>
           </div>
+          <p className="reidars-table-legend">
+            <span className="reidars-table-legend-span">GP: Pelejä pelattu</span>
+            <span className="reidars-table-legend-span">PTS: Pisteet</span>
+            <span className="reidars-table-legend-span">W: Voitot</span>
+            <span className="reidars-table-legend-span">T: Tasapelit</span>
+            <span className="reidars-table-legend-span">L: Tappiot</span>
+            <span className="reidars-table-legend-span">GF: Tehdyt maalit</span>
+            <span className="reidars-table-legend-span">GA: Päästetyt maalit</span>
+            <span className="reidars-table-legend-span">GD: Maaliero</span>
+          </p>
         </div>
       </section>
 
       <section className="article__content">
         <div className="articlebody">
-
           <h2 className="archiveitem__title">Pelit</h2>
           <div className="reidars-table-wrapper">
             <table className="reidars-datatable">
@@ -152,16 +161,18 @@ function SeasonDetailPage({
         </div>
       </section>
 
-      <p className="reidars-table-legend">
-        <span className="reidars-table-legend-span">GP: Pelejä pelattu</span>
-        <span className="reidars-table-legend-span">PTS: Pisteet</span>
-        <span className="reidars-table-legend-span">W: Voitot</span>
-        <span className="reidars-table-legend-span">T: Tasapelit</span>
-        <span className="reidars-table-legend-span">L: Tappiot</span>
-        <span className="reidars-table-legend-span">GF: Tehdyt maalit</span>
-        <span className="reidars-table-legend-span">GA: Päästetyt maalit</span>
-        <span className="reidars-table-legend-span">GD: Maaliero</span>
-      </p>
+      <section className="article__content">
+        <div className="articlebody">
+          <h3 className="archiveitem__title">Linkit</h3>
+          <a
+            className="reidars-external-link-button"
+            href={`https://tulospalvelu.leijonat.fi/serie/?season=2014&lid=71&did=5&stgid=9153`}
+            target="_blank"
+          >
+            Peli tulospalvelussa <strong>&raquo;</strong>
+          </a>
+        </div>
+      </section>
 
       <Link className="link reidars-backbutton" to="/">
         &lsaquo; Takaisin
