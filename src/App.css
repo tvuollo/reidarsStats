@@ -233,3 +233,37 @@
         width: auto;
     }
 }
+
+.reidars-loader {
+    animation: reidarsloader 3s infinite ease-in-out;
+}
+
+@keyframes reidarsloader {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(1079deg);
+    }
+}
+
+@-webkit-keyframes reidarsloader {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(1079deg);
+    }
+}
+
+@-moz-keyframes reidarsloader {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(1079deg);
+    }
+}
