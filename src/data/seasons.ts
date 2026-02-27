@@ -1,9 +1,16 @@
 import type { SeasonData } from '../types/season'
 import { getSeasonKeyFromPath, validateSeasonData } from '../utils/season'
 
+const dataRequestVersion = Date.now().toString(36)
+
+function withDataRequestVersion(path: string): string {
+  const separator = path.includes('?') ? '&' : '?'
+  return `${path}${separator}v=${dataRequestVersion}`
+}
+
 async function fetchText(path: string): Promise<string> {
   try {
-    const response = await fetch(path)
+    const response = await fetch(withDataRequestVersion(path), { cache: 'no-store' })
     if (!response.ok) {
       return ''
     }

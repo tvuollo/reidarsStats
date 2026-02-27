@@ -1,6 +1,13 @@
 import type { EventGameInfo, EventGameRecord } from '../types/events'
 import { excludedGameIds } from './seasons'
 
+const dataRequestVersion = Date.now().toString(36)
+
+function withDataRequestVersion(path: string): string {
+  const separator = path.includes('?') ? '&' : '?'
+  return `${path}${separator}v=${dataRequestVersion}`
+}
+
 export interface LoadedEventGame {
   fileKey: string
   gameId: string
@@ -10,7 +17,7 @@ export interface LoadedEventGame {
 
 async function fetchText(path: string): Promise<string> {
   try {
-    const response = await fetch(path)
+    const response = await fetch(withDataRequestVersion(path), { cache: 'no-store' })
     if (!response.ok) {
       return ''
     }
