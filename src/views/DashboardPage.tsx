@@ -88,19 +88,21 @@ function DashboardPage({
         </section>
       </div>
 
-      <div className="article__content">
-        <section className="articlebody">
-          <h2 className="archiveitem__title">Selaa</h2>
-          <div className="reidars-home-links">
-            <a className="reidars-home-link" href={playersUrl()}>
-              Pelaajat
-              <span className="reidars-home-link-text">
-                Lista kaikista kausidatasta loytyvista Reidars-pelaajista.
-              </span>
-            </a>
-          </div>
-        </section>
-      </div>
+      {/*
+        <div className="article__content">
+          <section className="articlebody">
+            <h2 className="archiveitem__title">Selaa</h2>
+            <div className="reidars-home-links">
+              <a className="reidars-home-link" href={playersUrl()}>
+                Pelaajat
+                <span className="reidars-home-link-text">
+                  Lista kaikista kausidatasta loytyvista Reidars-pelaajista.
+                </span>
+              </a>
+            </div>
+          </section>
+        </div>      
+      */}
 
       <div className="article__content">
         <section className="articlebody">
