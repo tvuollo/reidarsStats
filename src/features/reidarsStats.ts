@@ -1,8 +1,13 @@
 import { TARGET_TEAM_ID } from '../constants/team'
 import { validSeasons, validationResults } from '../data/seasons'
-import { calculateTeamTotalsAcrossSeasons, getTeamStatGroupDetail } from '../utils/season'
+import {
+  calculateTeamTotalsAcrossSeasons,
+  getTeamPlayerHistory,
+  getTeamStatGroupDetail,
+} from '../utils/season'
 
 export const reidarsTotals = calculateTeamTotalsAcrossSeasons(validSeasons, TARGET_TEAM_ID)
+export const reidarsPlayers = getTeamPlayerHistory(validSeasons, TARGET_TEAM_ID)
 
 export function getReidarsStatGroupDetail(seasonKey: string, statGroupId: string) {
   return getTeamStatGroupDetail(validSeasons, TARGET_TEAM_ID, seasonKey, statGroupId)

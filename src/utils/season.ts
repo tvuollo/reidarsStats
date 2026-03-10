@@ -1,6 +1,7 @@
 import type {
   SeasonData,
   SeasonGame,
+  SeasonPlayer,
   SeasonStandingTeam,
   SeasonTopScorer,
 } from '../types/season'
@@ -56,6 +57,20 @@ export interface TeamStatGroupDetail {
   topTeam: SeasonStandingTeam | null
   games: SeasonGame[]
   topScorers: SeasonTopScorer[]
+}
+
+export interface TeamPlayerHistory {
+  personId: string
+  playerId: string
+  firstName: string
+  lastName: string
+  displayName: string
+  seasons: string[]
+  seasonCount: number
+  firstSeason: string
+  lastSeason: string
+  jerseyNumbers: string[]
+  roles: string[]
 }
 
 interface SeasonDataset {
@@ -182,11 +197,7 @@ function sortStandingTeams(teams: SeasonStandingTeam[]): SeasonStandingTeam[] {
   return sorted
 }
 
-function isStaffPlayer(roleName?: string, roleId?: number): boolean {
-  if (roleId === 100) {
-    return true
-  }
-
+function isStaffPlayer(roleName?: string): boolean {
   if (!roleName) {
     return false
   }
@@ -237,6 +248,27 @@ function playerIdentityName(name?: string, firstName?: string, lastName?: string
   return normalizeName(name ?? '')
 }
 
+function normalizePlayerNameParts(player: SeasonPlayer): { firstName: string; lastName: string } {
+  if (player.FirstName || player.LastName) {
+    return {
+      firstName: player.FirstName ?? '',
+      lastName: player.LastName ?? '',
+    }
+  }
+
+  return splitSurnameFirstName(player.Name ?? '')
+}
+
+function playerDisplayName(player: SeasonPlayer): string {
+  const names = normalizePlayerNameParts(player)
+  return `${names.firstName} ${names.lastName}`.trim() || player.Name?.trim() || 'Unknown player'
+}
+
+function seasonSortValue(seasonKey: string): number {
+  const parsed = Number(seasonKey.replace('season', ''))
+  return Number.isFinite(parsed) ? parsed : Number.POSITIVE_INFINITY
+}
+
 function mergeScorerRows(current: SeasonTopScorer, incoming: SeasonTopScorer): SeasonTopScorer {
   const currentNames = scorerDisplayNameParts(current)
   const incomingNames = scorerDisplayNameParts(incoming)
@@ -281,6 +313,19 @@ function deduplicateScorers(rows: SeasonTopScorer[]): SeasonTopScorer[] {
   }
 
   return [...new Set(byKey.values())]
+}
+
+function getSeasonRosterPlayers(data: SeasonData, teamId: string): SeasonPlayer[] {
+  const players = data.Players.filter((player) => !isStaffPlayer(player.RoleName))
+  const hasExplicitTeamIds = players.some(
+    (player) => typeof player.TeamID === 'string' && player.TeamID.trim().length > 0,
+  )
+
+  if (!hasExplicitTeamIds) {
+    return players
+  }
+
+  return players.filter((player) => player.TeamID === teamId)
 }
 
 function emptyTotals(): TeamTotals {
@@ -504,9 +549,7 @@ export function getTeamStatGroupDetail(
     scorerNames.add(scorerIdentityName(scorer))
   }
 
-  const teamPlayers = season.data.Players.filter(
-    (player) => player.TeamID === teamId && !isStaffPlayer(player.RoleName, player.RoleID),
-  )
+  const teamPlayers = getSeasonRosterPlayers(season.data, teamId)
 
   for (const player of teamPlayers) {
     const playerName = playerIdentityName(player.Name, player.FirstName, player.LastName)
@@ -565,4 +608,105 @@ export function getTeamStatGroupDetail(
     games,
     topScorers,
   }
+}
+
+export function getTeamPlayerHistory(seasons: SeasonDataset[], teamId: string): TeamPlayerHistory[] {
+  const playersByKey = new Map<
+    string,
+    {
+      personId: string
+      playerId: string
+      firstName: string
+      lastName: string
+      displayName: string
+      seasons: Set<string>
+      jerseyNumbers: Set<string>
+      roles: Set<string>
+    }
+  >()
+  const usedKeysByName = new Map<string, string>()
+
+  for (const season of seasons) {
+    for (const player of getSeasonRosterPlayers(season.data, teamId)) {
+      const names = normalizePlayerNameParts(player)
+      const nameKey = `name:${playerIdentityName(player.Name, names.firstName, names.lastName)}`
+      const playerIdKey = player.PlayerID ? `player:${player.PlayerID}` : ''
+      const personIdKey = player.PersonID ? `person:${player.PersonID}` : ''
+      const key =
+        (playerIdKey && playersByKey.has(playerIdKey) ? playerIdKey : '') ||
+        (personIdKey && playersByKey.has(personIdKey) ? personIdKey : '') ||
+        usedKeysByName.get(nameKey) ||
+        playerIdKey ||
+        personIdKey ||
+        nameKey
+
+      const existing = playersByKey.get(key) ?? {
+        personId: player.PersonID ?? '',
+        playerId: player.PlayerID ?? '',
+        firstName: names.firstName,
+        lastName: names.lastName,
+        displayName: playerDisplayName(player),
+        seasons: new Set<string>(),
+        jerseyNumbers: new Set<string>(),
+        roles: new Set<string>(),
+      }
+
+      existing.personId = existing.personId || player.PersonID || ''
+      existing.playerId = existing.playerId || player.PlayerID || ''
+      existing.firstName = existing.firstName || names.firstName
+      existing.lastName = existing.lastName || names.lastName
+      existing.displayName = existing.displayName || playerDisplayName(player)
+      existing.seasons.add(season.seasonKey)
+
+      const jerseyNumber = player.JerseyNr || player.Jersey
+      if (typeof jerseyNumber === 'string' && jerseyNumber.trim().length > 0 && jerseyNumber !== '0') {
+        existing.jerseyNumbers.add(jerseyNumber)
+      }
+
+      if (player.RoleName?.trim()) {
+        existing.roles.add(player.RoleName.trim())
+      }
+
+      playersByKey.set(key, existing)
+      if (playerIdKey) {
+        playersByKey.set(playerIdKey, existing)
+      }
+      if (personIdKey) {
+        playersByKey.set(personIdKey, existing)
+      }
+      usedKeysByName.set(nameKey, key)
+    }
+  }
+
+  return [...new Set(playersByKey.values())]
+    .map((player) => {
+      const seasonsForPlayer = [...player.seasons].sort((a, b) => seasonSortValue(a) - seasonSortValue(b))
+
+      return {
+        personId: player.personId,
+        playerId: player.playerId,
+        firstName: player.firstName,
+        lastName: player.lastName,
+        displayName: player.displayName,
+        seasons: seasonsForPlayer,
+        seasonCount: seasonsForPlayer.length,
+        firstSeason: seasonsForPlayer[0] ?? '',
+        lastSeason: seasonsForPlayer[seasonsForPlayer.length - 1] ?? '',
+        jerseyNumbers: [...player.jerseyNumbers],
+        roles: [...player.roles],
+      }
+    })
+    .sort((a, b) => {
+      const seasonCountCompare = b.seasonCount - a.seasonCount
+      if (seasonCountCompare !== 0) {
+        return seasonCountCompare
+      }
+
+      const lastNameCompare = a.lastName.localeCompare(b.lastName, 'fi')
+      if (lastNameCompare !== 0) {
+        return lastNameCompare
+      }
+
+      return a.firstName.localeCompare(b.firstName, 'fi')
+    })
 }

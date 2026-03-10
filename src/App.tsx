@@ -8,10 +8,12 @@ import { getSingleGameViewData, hasSingleGameEventsData } from './features/gameE
 import { searchGames } from './features/gameSearch'
 import {
   getReidarsStatGroupDetail,
+  reidarsPlayers,
   reidarsTotals,
 } from './features/reidarsStats'
 import { homeUrl } from './features/queryRoutes'
 import DashboardPage from './views/DashboardPage'
+import PlayersPage from './views/PlayersPage'
 import SearchPage from './views/SearchPage'
 import SeasonDetailPage from './views/SeasonDetailPage'
 import SingleGamePage from './views/SingleGamePage'
@@ -53,13 +55,17 @@ function resolveViewContent({
     return <SearchPage query={query} results={results} />
   }
 
+  if (view === 'players') {
+    return <PlayersPage players={reidarsPlayers} />
+  }
+
   if (view !== 'home' && !seasonKey && !statGroupId && !gameId && !query) {
     return (
       <main className="app">
         <header className="app-header">
-          <h1>Invalid View</h1>
+          <h1>Virhe</h1>
           <a className="inline-link" href={homeUrl()}>
-            Back to overview
+           Takaisin alkuun
           </a>
         </header>
       </main>

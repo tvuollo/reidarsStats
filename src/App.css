@@ -238,6 +238,14 @@
     animation: reidarsloader 3s infinite ease-in-out;
 }
 
+.reidars-players-seasons {
+    color: #606060;
+    display: block;
+    font-size: .875rem;
+    font-weight: 400;
+    margin-top: .25rem;
+}
+
 @keyframes reidarsloader {
     from {
         transform: rotate(0deg);

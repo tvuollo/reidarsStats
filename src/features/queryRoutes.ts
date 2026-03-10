@@ -26,3 +26,7 @@ export function searchUrl(query: string): string {
   })
   return `/?${params.toString()}`
 }
+
+export function playersUrl(): string {
+  return '/?view=players'
+}
