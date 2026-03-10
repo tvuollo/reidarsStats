@@ -1,6 +1,11 @@
 import { loadedEventGames } from '../data/events'
 import type { EventGameLog } from '../types/events'
 
+export interface SearchContributionSummary {
+  goalCount: number
+  assistCount: number
+}
+
 export interface GameSearchResult {
   gameId: string
   eventFileKey: string
@@ -12,6 +17,7 @@ export interface GameSearchResult {
   awayGoals: number
   matchedIn: string[]
   matchedPlayerLogs: EventGameLog[]
+  contributionSummary: SearchContributionSummary
 }
 
 function normalize(value: string): string {
@@ -57,6 +63,29 @@ function logSignature(log: EventGameLog): string {
   ].join('|')
 }
 
+function countContributionMentions(logs: EventGameLog[], query: string): SearchContributionSummary {
+  let goalCount = 0
+  let assistCount = 0
+
+  for (const log of logs) {
+    if (typeof log.ScorerName === 'string' && includesQuery(log.ScorerName, query)) {
+      goalCount += 1
+    }
+
+    if (
+      (typeof log.FirstAssistName === 'string' && includesQuery(log.FirstAssistName, query)) ||
+      (typeof log.SecondAssistName === 'string' && includesQuery(log.SecondAssistName, query))
+    ) {
+      assistCount += 1
+    }
+  }
+
+  return {
+    goalCount,
+    assistCount,
+  }
+}
+
 export function searchGames(queryInput: string): GameSearchResult[] {
   const query = normalize(queryInput)
   if (!query) {
@@ -69,6 +98,7 @@ export function searchGames(queryInput: string): GameSearchResult[] {
     const game = entry.game
     const matchedIn = new Set<string>()
     const matchedLogs = matchingPlayerLogs(entry.record.GameLogsUpdate, query)
+    const contributionSummary = countContributionMentions(matchedLogs, query)
 
     if (includesQuery(game.HomeTeam.Name, query) || includesQuery(game.AwayTeam.Name, query)) {
       matchedIn.add('team')
@@ -96,6 +126,7 @@ export function searchGames(queryInput: string): GameSearchResult[] {
         existing.matchedPlayerLogs.push(log)
         existingSignatures.add(signature)
       }
+      existing.contributionSummary = countContributionMentions(existing.matchedPlayerLogs, query)
       continue
     }
 
@@ -110,6 +141,7 @@ export function searchGames(queryInput: string): GameSearchResult[] {
       awayGoals: game.AwayTeam.Goals,
       matchedIn: [...matchedIn],
       matchedPlayerLogs: matchedLogs,
+      contributionSummary,
     })
   }
 

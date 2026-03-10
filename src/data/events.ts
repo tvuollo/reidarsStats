@@ -15,6 +15,59 @@ export interface LoadedEventGame {
   game: EventGameInfo
 }
 
+function parseYear(value: string): number | null {
+  const match = /(\d{4})$/.exec(value.trim())
+  if (!match) {
+    return null
+  }
+
+  const parsed = Number(match[1])
+  return Number.isFinite(parsed) ? parsed : null
+}
+
+function gameYear(entry: LoadedEventGame): number | null {
+  const match = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(entry.game.StartDate.trim())
+  if (match) {
+    return Number(match[3])
+  }
+
+  const parsed = Date.parse(entry.game.StartDate)
+  if (!Number.isFinite(parsed)) {
+    return null
+  }
+
+  return new Date(parsed).getUTCFullYear()
+}
+
+function shouldReplaceEventGame(existing: LoadedEventGame, candidate: LoadedEventGame): boolean {
+  const existingFileYear = parseYear(existing.fileKey)
+  const candidateFileYear = parseYear(candidate.fileKey)
+  const existingGameYear = gameYear(existing)
+  const candidateGameYear = gameYear(candidate)
+
+  const existingYearMatches = existingFileYear !== null && existingFileYear === existingGameYear
+  const candidateYearMatches = candidateFileYear !== null && candidateFileYear === candidateGameYear
+
+  if (existingYearMatches !== candidateYearMatches) {
+    return candidateYearMatches
+  }
+
+  const existingDistance =
+    existingFileYear !== null && existingGameYear !== null
+      ? Math.abs(existingFileYear - existingGameYear)
+      : Number.POSITIVE_INFINITY
+  const candidateDistance =
+    candidateFileYear !== null && candidateGameYear !== null
+      ? Math.abs(candidateFileYear - candidateGameYear)
+      : Number.POSITIVE_INFINITY
+
+  if (existingDistance !== candidateDistance) {
+    return candidateDistance < existingDistance
+  }
+
+  return candidate.fileKey.localeCompare(existing.fileKey) < 0
+}
+
 async function fetchText(path: string): Promise<string> {
   try {
     const response = await fetch(withDataRequestVersion(path), { cache: 'no-store' })
@@ -69,24 +122,36 @@ export const loadedEventFiles = (
   )
 ).sort((a, b) => a.fileKey.localeCompare(b.fileKey))
 
-export const loadedEventGames: LoadedEventGame[] = loadedEventFiles.flatMap((file) =>
-  file.records
-    .map((record) => {
+export const loadedEventGames: LoadedEventGame[] = (() => {
+  const byGameId = new Map<string, LoadedEventGame>()
+
+  for (const file of loadedEventFiles) {
+    for (const record of file.records) {
       const game = record.GamesUpdate[0]
       if (!game) {
-        return null
+        continue
       }
 
-      return {
+      const entry: LoadedEventGame = {
         fileKey: file.fileKey,
         gameId: String(game.Id),
         record,
         game,
       }
-    })
-    .filter((entry): entry is LoadedEventGame => entry !== null)
-    .filter((entry) => !excludedGameIds.has(entry.gameId)),
-)
+
+      if (excludedGameIds.has(entry.gameId)) {
+        continue
+      }
+
+      const existing = byGameId.get(entry.gameId)
+      if (!existing || shouldReplaceEventGame(existing, entry)) {
+        byGameId.set(entry.gameId, entry)
+      }
+    }
+  }
+
+  return [...byGameId.values()].sort((a, b) => a.gameId.localeCompare(b.gameId))
+})()
 
 export const eventGamesById = loadedEventGames.reduce((map, entry) => {
   const list = map.get(entry.gameId) ?? []

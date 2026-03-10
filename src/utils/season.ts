@@ -71,6 +71,17 @@ export interface TeamPlayerHistory {
   lastSeason: string
   jerseyNumbers: string[]
   roles: string[]
+  seasonStats: TeamPlayerSeasonStats[]
+  careerGoals: number
+  careerAssists: number
+  careerPoints: number
+}
+
+export interface TeamPlayerSeasonStats {
+  seasonKey: string
+  goals: number
+  assists: number
+  points: number
 }
 
 interface SeasonDataset {
@@ -240,6 +251,11 @@ function scorerIdentityName(scorer: SeasonTopScorer): string {
   return normalizeName(`${names.lastName} ${names.firstName}`)
 }
 
+function scorerDisplayName(scorer: SeasonTopScorer): string {
+  const names = scorerDisplayNameParts(scorer)
+  return `${names.firstName} ${names.lastName}`.trim() || scorer.Name?.trim() || 'Unknown player'
+}
+
 function playerIdentityName(name?: string, firstName?: string, lastName?: string): string {
   if (firstName || lastName) {
     return normalizeName(`${lastName ?? ''} ${firstName ?? ''}`)
@@ -326,6 +342,56 @@ function getSeasonRosterPlayers(data: SeasonData, teamId: string): SeasonPlayer[
   }
 
   return players.filter((player) => player.TeamID === teamId)
+}
+
+function historyIdentityKey(nameKey: string, playerId?: string, personId?: string): string {
+  if (nameKey !== 'name:') {
+    return nameKey
+  }
+
+  if (playerId) {
+    return `player:${playerId}`
+  }
+
+  if (personId) {
+    return `person:${personId}`
+  }
+
+  return nameKey
+}
+
+function getTeamSeasonScorers(data: SeasonData, teamId: string): SeasonTopScorer[] {
+  const rosterPlayers = getSeasonRosterPlayers(data, teamId)
+  const rosterPersonIds = new Set(rosterPlayers.map((player) => player.PersonID).filter(Boolean))
+  const rosterPlayerIds = new Set(rosterPlayers.map((player) => player.PlayerID).filter(Boolean))
+  const rosterNames = new Set(
+    rosterPlayers.map((player) => playerIdentityName(player.Name, player.FirstName, player.LastName)),
+  )
+  const hasExplicitTeamIds = data.TopScorers.some(
+    (scorer) => typeof scorer.TeamID === 'string' && scorer.TeamID.trim().length > 0,
+  )
+
+  const matched = data.TopScorers.filter((scorer) => {
+    if (scorer.TeamID) {
+      return scorer.TeamID === teamId
+    }
+
+    if (rosterPersonIds.has(scorer.PersonID)) {
+      return true
+    }
+
+    if (scorer.PlayerID && rosterPlayerIds.has(scorer.PlayerID)) {
+      return true
+    }
+
+    return rosterNames.has(scorerIdentityName(scorer))
+  })
+
+  if (matched.length > 0 || hasExplicitTeamIds) {
+    return matched
+  }
+
+  return data.TopScorers
 }
 
 function emptyTotals(): TeamTotals {
@@ -622,23 +688,15 @@ export function getTeamPlayerHistory(seasons: SeasonDataset[], teamId: string): 
       seasons: Set<string>
       jerseyNumbers: Set<string>
       roles: Set<string>
+      seasonStats: Map<string, TeamPlayerSeasonStats>
     }
   >()
-  const usedKeysByName = new Map<string, string>()
 
   for (const season of seasons) {
     for (const player of getSeasonRosterPlayers(season.data, teamId)) {
       const names = normalizePlayerNameParts(player)
       const nameKey = `name:${playerIdentityName(player.Name, names.firstName, names.lastName)}`
-      const playerIdKey = player.PlayerID ? `player:${player.PlayerID}` : ''
-      const personIdKey = player.PersonID ? `person:${player.PersonID}` : ''
-      const key =
-        (playerIdKey && playersByKey.has(playerIdKey) ? playerIdKey : '') ||
-        (personIdKey && playersByKey.has(personIdKey) ? personIdKey : '') ||
-        usedKeysByName.get(nameKey) ||
-        playerIdKey ||
-        personIdKey ||
-        nameKey
+      const key = historyIdentityKey(nameKey, player.PlayerID, player.PersonID)
 
       const existing = playersByKey.get(key) ?? {
         personId: player.PersonID ?? '',
@@ -649,6 +707,7 @@ export function getTeamPlayerHistory(seasons: SeasonDataset[], teamId: string): 
         seasons: new Set<string>(),
         jerseyNumbers: new Set<string>(),
         roles: new Set<string>(),
+        seasonStats: new Map<string, TeamPlayerSeasonStats>(),
       }
 
       existing.personId = existing.personId || player.PersonID || ''
@@ -668,19 +727,56 @@ export function getTeamPlayerHistory(seasons: SeasonDataset[], teamId: string): 
       }
 
       playersByKey.set(key, existing)
-      if (playerIdKey) {
-        playersByKey.set(playerIdKey, existing)
+    }
+
+    for (const scorer of getTeamSeasonScorers(season.data, teamId)) {
+      const names = scorerDisplayNameParts(scorer)
+      const nameKey = `name:${scorerIdentityName(scorer)}`
+      const key = historyIdentityKey(nameKey, scorer.PlayerID, scorer.PersonID)
+
+      const existing = playersByKey.get(key) ?? {
+        personId: scorer.PersonID ?? '',
+        playerId: scorer.PlayerID ?? '',
+        firstName: names.firstName,
+        lastName: names.lastName,
+        displayName: scorerDisplayName(scorer),
+        seasons: new Set<string>(),
+        jerseyNumbers: new Set<string>(),
+        roles: new Set<string>(),
+        seasonStats: new Map<string, TeamPlayerSeasonStats>(),
       }
-      if (personIdKey) {
-        playersByKey.set(personIdKey, existing)
+
+      existing.personId = existing.personId || scorer.PersonID || ''
+      existing.playerId = existing.playerId || scorer.PlayerID || ''
+      existing.firstName = existing.firstName || names.firstName
+      existing.lastName = existing.lastName || names.lastName
+      existing.displayName = existing.displayName || scorerDisplayName(scorer)
+      existing.seasons.add(season.seasonKey)
+
+      const seasonStats = existing.seasonStats.get(season.seasonKey) ?? {
+        seasonKey: season.seasonKey,
+        goals: 0,
+        assists: 0,
+        points: 0,
       }
-      usedKeysByName.set(nameKey, key)
+      seasonStats.goals += scorer.Goals
+      seasonStats.assists += scorer.Assists
+      seasonStats.points += scorer.Points
+      existing.seasonStats.set(season.seasonKey, seasonStats)
+
+      playersByKey.set(key, existing)
     }
   }
 
   return [...new Set(playersByKey.values())]
     .map((player) => {
       const seasonsForPlayer = [...player.seasons].sort((a, b) => seasonSortValue(a) - seasonSortValue(b))
+      const seasonStats = [...player.seasonStats.values()].sort(
+        (a, b) => seasonSortValue(a.seasonKey) - seasonSortValue(b.seasonKey),
+      )
+      const careerGoals = seasonStats.reduce((total, seasonStatsRow) => total + seasonStatsRow.goals, 0)
+      const careerAssists = seasonStats.reduce((total, seasonStatsRow) => total + seasonStatsRow.assists, 0)
+      const careerPoints = seasonStats.reduce((total, seasonStatsRow) => total + seasonStatsRow.points, 0)
 
       return {
         personId: player.personId,
@@ -694,6 +790,10 @@ export function getTeamPlayerHistory(seasons: SeasonDataset[], teamId: string): 
         lastSeason: seasonsForPlayer[seasonsForPlayer.length - 1] ?? '',
         jerseyNumbers: [...player.jerseyNumbers],
         roles: [...player.roles],
+        seasonStats,
+        careerGoals,
+        careerAssists,
+        careerPoints,
       }
     })
     .sort((a, b) => {

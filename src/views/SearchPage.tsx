@@ -76,7 +76,13 @@ function SearchPage({ query, results }: SearchPageProps) {
                       <td className="reidars-datatable-td-left">
                         {result.homeGoals} - {result.awayGoals}
                       </td>
-                      <td className="reidars-datatable-td-left">{generateMatchedString(result.matchedIn, result.matchedPlayerLogs)}</td>
+                      <td className="reidars-datatable-td-left">
+                        {generateMatchedString(
+                          result.matchedIn,
+                          result.matchedPlayerLogs,
+                          result.contributionSummary,
+                        )}
+                      </td>
                       <td>
                         <a className="inline-link" href={gameUrl(result.gameId)}>
                           <strong>Pelin tiedot &raquo;</strong>

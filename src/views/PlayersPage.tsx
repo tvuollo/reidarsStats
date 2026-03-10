@@ -28,6 +28,9 @@ function PlayersPage({ players }: PlayersPageProps) {
                 <tr>
                   <th className="reidars-datatable-td-left">Pelaaja</th>
                   <th>Vuosia</th>
+                  <th>G</th>
+                  <th>A</th>
+                  <th>P</th>
                   <th className="reidars-datatable-td-left">Vuodet</th>
                 </tr>
               </thead>
@@ -43,6 +46,9 @@ function PlayersPage({ players }: PlayersPageProps) {
                         {player.displayName}
                       </th>
                       <td>{player.seasons.length}</td>
+                      <td>{player.careerGoals}</td>
+                      <td>{player.careerAssists}</td>
+                      <td>{player.careerPoints}</td>
                       <td className="reidars-datatable-td-left">{seasonLabel(player.firstSeason)}-{seasonLabel(player.lastSeason)}</td>
                     </tr>
                   ))
