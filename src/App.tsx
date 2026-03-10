@@ -24,6 +24,7 @@ interface ViewResolutionInput {
   statGroupId: string
   gameId: string
   query: string
+  sort: string
 }
 
 function resolveViewContent({
@@ -32,6 +33,7 @@ function resolveViewContent({
   statGroupId,
   gameId,
   query,
+  sort,
 }: ViewResolutionInput): ReactElement {
   if (view === 'season' && seasonKey && statGroupId) {
     const detail = getReidarsStatGroupDetail(seasonKey, statGroupId)
@@ -56,7 +58,7 @@ function resolveViewContent({
   }
 
   if (view === 'players') {
-    return <PlayersPage players={reidarsPlayers} />
+    return <PlayersPage players={reidarsPlayers} sortKey={sort || 'years'} />
   }
 
   if (view !== 'home' && !seasonKey && !statGroupId && !gameId && !query) {
@@ -83,23 +85,24 @@ function App() {
   const statGroupId = searchParams.get('statgroupid') ?? ''
   const gameId = searchParams.get('gameid') ?? ''
   const query = searchParams.get('query')?.trim() ?? ''
-  const routeKey = `${view}|${seasonKey}|${statGroupId}|${gameId}|${query}`
+  const sort = searchParams.get('sort')?.trim().toLowerCase() ?? ''
+  const routeKey = `${view}|${seasonKey}|${statGroupId}|${gameId}|${query}|${sort}`
 
   const [resolved, setResolved] = useState<{ routeKey: string, content: ReactElement }>(() => ({
     routeKey,
-    content: resolveViewContent({ view, seasonKey, statGroupId, gameId, query }),
+    content: resolveViewContent({ view, seasonKey, statGroupId, gameId, query, sort }),
   }))
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
       setResolved({
         routeKey,
-        content: resolveViewContent({ view, seasonKey, statGroupId, gameId, query }),
+        content: resolveViewContent({ view, seasonKey, statGroupId, gameId, query, sort }),
       })
     }, 0)
 
     return () => window.clearTimeout(timeoutId)
-  }, [routeKey, view, seasonKey, statGroupId, gameId, query])
+  }, [routeKey, view, seasonKey, statGroupId, gameId, query, sort])
 
   if (resolved.routeKey !== routeKey) {
     return <LoadingView />

@@ -27,6 +27,10 @@ export function searchUrl(query: string): string {
   return `/?${params.toString()}`
 }
 
-export function playersUrl(): string {
-  return '/?view=players'
+export function playersUrl(sort = 'years'): string {
+  const params = new URLSearchParams({
+    view: 'players',
+    sort,
+  })
+  return `/?${params.toString()}`
 }

@@ -42,6 +42,18 @@
     padding: .5rem 1rem;
 }
 
+.reidars-table-sortlink {
+    color: inherit;
+    display: inline-block;
+    font-weight: 700;
+}
+
+.reidars-table-sortlink:hover,
+.reidars-table-sortlink:focus,
+.reidars-table-sortlink:active {
+    color: #cde6ff;
+}
+
 .reidars-datatable tbody tr:nth-child(even) {
     background: #f0f0f0;
 }
@@ -92,6 +104,18 @@
 .reidars-table-legend-span {
     display: inline-block;
     margin: 0 .5rem .5rem 0;
+}
+
+.reidars-table-sortlink {
+    text-decoration: underline;
+}
+
+.reidars-players-seasons {
+    color: #606060;
+    display: block;
+    font-size: .875rem;
+    font-weight: 400;
+    margin-top: .25rem;
 }
 
 .reidars-backbutton {
@@ -238,13 +262,6 @@
     animation: reidarsloader 3s infinite ease-in-out;
 }
 
-.reidars-players-seasons {
-    color: #606060;
-    display: block;
-    font-size: .875rem;
-    font-weight: 400;
-    margin-top: .25rem;
-}
 
 @keyframes reidarsloader {
     from {
